@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
@@ -34,7 +34,7 @@ function TabScanner() {
   }
   if (hasPermission === false) {
     return (
-      <Card>
+      <Card padding>
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
       </Card>
     );

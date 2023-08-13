@@ -57,7 +57,11 @@ function TabProductDetails() {
             {haramIngredients.map((haramItem: IIngredient) => {
               return (
                 <View key={uuid.v4().toString()} style={styles.ingredient}>
-                  <LinkText ingredient={haramItem} />
+                  <LinkText
+                    label={haramItem.attributes.name}
+                    to="TabIngredient"
+                    onPress={() => product.setSelectedIngredient(haramItem)}
+                  />
                   <AntDesign name="exclamationcircle" size={18} color="red" />
                 </View>
               );
@@ -72,7 +76,12 @@ function TabProductDetails() {
             {doubtfulIngredients.map((doubtfulItem: IIngredient) => {
               return (
                 <View key={uuid.v4().toString()} style={styles.ingredient}>
-                  <LinkText ingredient={doubtfulItem} color="red" />
+                  <LinkText
+                    label={doubtfulItem.attributes.name}
+                    to="TabIngredient"
+                    onPress={() => product.setSelectedIngredient(doubtfulItem)}
+                    color="red"
+                  />
                   <AntDesign name="warning" size={18} color="orange" />
                 </View>
               );
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   marginBottom: {
-    marginBottom: 6,
+    marginBottom: 8,
   },
   header: {
     display: "flex",

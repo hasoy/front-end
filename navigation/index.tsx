@@ -44,8 +44,8 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-      <Stack.Screen name="TabIngredient" component={TabIngredient} />
       <Stack.Screen name="TabProductDetails" component={TabProductDetails} />
+      <Stack.Screen name="TabIngredient" component={TabIngredient} />
       <Stack.Screen name="ReportProduct" component={ReportProduct} />
       <Stack.Screen name="AddProduct" component={AddProduct} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -87,15 +87,6 @@ function BottomTabNavigator() {
           title: "Product details",
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="sticky-note" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="TabIngredient"
-        component={TabIngredient}
-        options={{
-          title: "Ingredient details",
-          tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="delicious" color={color} />,
         }}
       />
     </BottomTab.Navigator>

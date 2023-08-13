@@ -1,6 +1,7 @@
 import { FlexStyle, StyleProp, StyleSheet, TextInput } from "react-native";
 import { Typography } from "./Typography";
 import Card from "./Card";
+import { useState } from "react";
 
 interface IInput {
   setState: React.Dispatch<React.SetStateAction<string>>;
@@ -21,6 +22,8 @@ export default function Input({
   const handleInput = (text: string) => {
     setState(text);
   };
+
+  const [focused, setFocused] = useState(false);
 
   return (
     <Card scroll={false} style={containerStyle}>

@@ -2,25 +2,24 @@ import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet } from "react-native";
 import { ITextColor, Typography } from "./Typography";
 import { IIngredient } from "../types/schemas.types";
-import { useStore } from "../hooks/useStore";
 
 interface ILinkText {
-  ingredient: IIngredient;
-  to;
+  label: string;
+  to: string;
   color?: ITextColor;
+  onPress?: () => void;
 }
 
-export default function LinkText({ ingredient, color = "red" }: ILinkText) {
+export default function LinkText({ label, color = "red", to, onPress }: ILinkText) {
   const navigation = useNavigation();
-  const { product } = useStore();
   return (
     <Pressable
       onPress={() => {
-        product.setSelectedIngredient(ingredient);
-        navigation.navigate("TabIngredient");
+        onPress();
+        navigation.navigate(to);
       }}
     >
-      <Typography style={[styles.link]} color={color} label={ingredient.attributes.name} />
+      <Typography style={[styles.link]} color={color} label={label} weight="600" />
     </Pressable>
   );
 }

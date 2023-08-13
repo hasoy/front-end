@@ -78,12 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginBottom: 50,
   },
-  ingredient: {
-    padding: 4,
-    backgroundColor: COLORS.GREEN,
-    borderRadius: 4,
-    marginHorizontal: 2,
-  },
 });
 
 export default observer(AddProduct);

@@ -14,7 +14,7 @@ export const LABELS = {
   NIET_HALAL: "Dit product is niet halal",
   NIET_HARAM: "Dit product is niet haram",
   SLUITEN: "Sluiten",
-  PRODUCT_TWIJFELACHTIG: "Product twijfelachtig",
+  PRODUCT_TWIJFELACHTIG: "Dit product is twijfelachtig",
   INGREDIENT_ONTBREEKT: "Ingredient ontbreekt",
   KIES_REDEN: "Selecteer reden van melden",
   VERZENDEN: "Verzenden",

@@ -32,7 +32,7 @@ export default function Button({
   };
   return (
     <Pressable style={[getType(), shrink && styles.shrink, styles.button, style]} onPress={onPress}>
-      <Typography color={getColor()} label={label} alignText="center" weight="500"></Typography>
+      <Typography color={getColor()} label={label} alignText="center" weight="600"></Typography>
     </Pressable>
   );
 }
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   doubtful: {
-    backgroundColor: COLORS.BLUE_3,
+    backgroundColor: COLORS.BLUE_2,
     textTransform: "capitalize",
+    alignSelf: "flex-start",
   },
 });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Modal, Pressable, StyleSheet, OpaqueColorValue } from "react-native";
+import { View, Modal, StyleSheet, OpaqueColorValue } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Typography } from "./Typography";
 import { LABELS } from "../constants/Labels";
@@ -71,9 +71,5 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 10,
     padding: 10,
-  },
-  closeButtonText: {
-    color: "white",
-    fontWeight: "bold",
   },
 });
