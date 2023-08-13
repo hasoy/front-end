@@ -11,7 +11,7 @@ function TabIngredient() {
   const { product } = useStore();
 
   return (
-    <Card>
+    <Card padding>
       {product.current_selectedIngredient && (
         <>
           <Title label={product.current_selectedIngredient?.attributes.name} />
@@ -20,6 +20,8 @@ function TabIngredient() {
             type={
               product.current_selectedIngredient?.attributes.status === "haram"
                 ? "warning"
+                : product.current_selectedIngredient?.attributes.status === "doubtful"
+                ? "doubtful"
                 : "primary"
             }
             onPress={undefined}

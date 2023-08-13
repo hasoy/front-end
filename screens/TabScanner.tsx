@@ -1,7 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { RootTabScreenProps } from "../types";
 import { useNavigation } from "@react-navigation/native";
 import { Typography } from "../components/Typography";
 import Button from "../components/Button";
@@ -12,12 +11,10 @@ import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
 import { Title } from "../components";
 
-function TabScanner({}: RootTabScreenProps<"TabScanner">) {
+function TabScanner() {
   const { product } = useStore();
   const host = "https://lionfish-app-54sxn.ondigitalocean.app";
   const [hasPermission, setHasPermission] = useState<Boolean>();
-  const [scannedBarcode, setScannedBarcode] = useState("");
-  const [productPreview, setProductPreview] = useState("");
   const [scanned, setScanned] = useState(false);
   const navigation = useNavigation();
 
@@ -45,7 +42,7 @@ function TabScanner({}: RootTabScreenProps<"TabScanner">) {
 
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);
-    setScannedBarcode(data);
+    product.setBarcode(data);
     await fetchBarcode(data.toString());
   };
 
@@ -54,8 +51,7 @@ function TabScanner({}: RootTabScreenProps<"TabScanner">) {
     try {
       const response = await fetch(barcodeQueryUrl);
       const json = await response.json();
-      product.setScannedProduct(json.data ? json.data[0].attributes : null);
-      setProductPreview(json.data ? json.data[0].attributes.productName : "");
+      product.setScannedProduct(json.data ? json.data[0]?.attributes : null);
     } catch (error) {
       console.error(error);
       return null;
@@ -63,53 +59,46 @@ function TabScanner({}: RootTabScreenProps<"TabScanner">) {
   }
 
   return (
-    <Card scroll={false}>
+    <>
       {scanned && !product.current_scannedProduct ? (
-        <>
+        <Card padding={scanned} scroll={false}>
+          <Title
+            level="2"
+            label={`${LABELS.BARCODE}:${
+              product.current_barcode
+            } ${LABELS.NIET_GEVONDEN.toLowerCase()}`}
+          />
           <Image
             style={styles.image}
             source={require("../assets/images/scan.png")}
-            contentFit="cover"
+            contentFit="contain"
           />
-          {scannedBarcode && <Typography label={scannedBarcode} />}
-          {productPreview && <Typography label={productPreview} />}
           <Button
             label={LABELS.OPNIEUW_SCANNEN}
             onPress={() => {
               setScanned(false);
             }}
+            style={styles.space}
           />
-        </>
+          <Button
+            label={LABELS.PRODUCT_TOEVOEGEN}
+            onPress={() => {
+              navigation.navigate("AddProduct");
+            }}
+            style={styles.space}
+            type="secondary"
+          />
+        </Card>
       ) : (
-        <View style={styles.barcodeContainer}>
-          <Title label="Scan barcode" level="3" />
+        <Card padding={false} scroll={false} style={styles.barcodeContainer}>
+          <Title label="Scan barcode" level="3" color="white" />
           <BarCodeScanner
             onBarCodeScanned={handleBarCodeScanned}
             style={styles.barcodescanner}
           ></BarCodeScanner>
-        </View>
+        </Card>
       )}
-      {product.current_scannedProduct !== null && scanned && (
-        <Typography
-          label={`${LABELS.GESCAND_PRODUCT}: \n ${product.current_scannedProduct.productName}`}
-        ></Typography>
-      )}
-      {product.current_scannedProduct === null && scanned && (
-        <View>
-          {product?.current_scannedProduct && (
-            <Typography
-              label={`${LABELS.PRODUCT_MET_BARCODE} ${product.current_scannedProduct?.barcode} ${LABELS.NIET_GEVONDEN}`}
-            />
-          )}
-          <Image
-            source="/images/product_not_found.png"
-            contentFit="cover"
-            transition={1000}
-            style={styles.image}
-          />
-        </View>
-      )}
-    </Card>
+    </>
   );
 }
 
@@ -119,10 +108,12 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "transparent",
   },
+  space: {
+    justifyContent: "flex-end",
+  },
   barcodescanner: {
-    width: "80%",
-    height: "35%",
-    alignSelf: "center",
+    width: "100%",
+    height: "30%",
   },
   barcodeContainer: {
     display: "flex",

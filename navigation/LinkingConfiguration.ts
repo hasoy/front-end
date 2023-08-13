@@ -35,6 +35,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               ReportProduct: "ReportProduct",
             },
           },
+          AddProduct: {
+            screens: {
+              ReportProduct: "AddProduct",
+            },
+          },
         },
       },
       Modal: "modal",

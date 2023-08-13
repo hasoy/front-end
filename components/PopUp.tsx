@@ -1,16 +1,30 @@
 import { useState } from "react";
-import { View, Modal, Pressable, StyleSheet } from "react-native";
+import { View, Modal, Pressable, StyleSheet, OpaqueColorValue } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Typography } from "./Typography";
 import { LABELS } from "../constants/Labels";
+import { Title } from "./Title";
+import Button from "./Button";
 
 interface IModal {
-  label: string;
+  title: string;
   visible: boolean;
   onDismiss: () => void;
+  iconColor?: string | OpaqueColorValue;
+  iconSize?: number;
+  iconName?: string;
+  message?: string;
 }
 
-export default function PopUp({ label, visible, onDismiss }: IModal) {
+export default function PopUp({
+  title,
+  message,
+  visible,
+  onDismiss,
+  iconColor,
+  iconSize,
+  iconName,
+}: IModal) {
   const [modalVisible, setModalVisible] = useState(visible);
 
   const toggleModal = () => {
@@ -26,11 +40,10 @@ export default function PopUp({ label, visible, onDismiss }: IModal) {
     >
       <View style={styles.modalContainer}>
         <View style={styles.view}>
-          <AntDesign name="checkcircle" color="green" size={30} />
-          <Typography label={label} />
-          <Pressable onPress={toggleModal} style={styles.closeButton}>
-            <Typography label={LABELS.SLUITEN} color="white" weight="700" />
-          </Pressable>
+          {iconName && <AntDesign name={iconName} color={iconColor} size={iconSize} />}
+          <Title level="2" label={title} />
+          <Typography label={message} />
+          <Button label={LABELS.SLUITEN} onPress={toggleModal} style={styles.button} />
         </View>
       </View>
     </Modal>
@@ -43,22 +56,16 @@ const styles = StyleSheet.create({
     height: "30%",
     backgroundColor: "white",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignContent: "center",
-    margin: "20",
-  },
-  button: {
-    backgroundColor: "blue",
+    padding: 20,
     borderRadius: 10,
-    padding: 10,
-    alignItems: "center",
-    justifyContent: "center",
   },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#BFBFBF",
+    backgroundColor: "rgba(191, 191, 191, 0.9)",
   },
   closeButton: {
     backgroundColor: "red",

@@ -20,6 +20,7 @@ import TabScanner from "../screens/TabScanner";
 import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ReportProduct from "../screens/ReportProduct";
+import AddProduct from "../screens/AddProduct";
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -46,6 +47,7 @@ function RootNavigator() {
       <Stack.Screen name="TabIngredient" component={TabIngredient} />
       <Stack.Screen name="TabProductDetails" component={TabProductDetails} />
       <Stack.Screen name="ReportProduct" component={ReportProduct} />
+      <Stack.Screen name="AddProduct" component={AddProduct} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>

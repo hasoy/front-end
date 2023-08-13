@@ -21,4 +21,10 @@ export const LABELS = {
   BARCODE: "Barcode",
   GEEN_TOESTEMMING_CAMERA: "Geen toestemming voor camera ontvangen",
   TOESTEMMING_CAMERA_AANVRAAG: "Aanvraag voor toestemming gebruik van camera",
+  PRODUCT_TOEVOEGEN: "Product toevoegen",
+  PRODUCT_NAAM: "Product naam",
+  VOEG_INGREDIENTEN_TOE: "Voeg ingredienten toe",
+  VUL_UW_TOELICHTING_TOE: "Vul uw toelichting toe in max 200 tekens",
+  PRODUCT_REPORT_SENT: "Product melding verstuurd",
+  PRODUCT_REPORT_SENT_DESC: "JazakAllahu khairan. Uw melding wordt spoedig bekeken in sha Allah",
 };

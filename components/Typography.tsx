@@ -1,7 +1,8 @@
+import { COLORS } from "../constants/Colors";
 import { Text } from "./Themed";
 import { StyleProp, StyleSheet, ViewStyle, useColorScheme } from "react-native";
 
-export type ITextColor = "white" | "black" | "red" | "blue";
+export type ITextColor = "white" | "black" | "red" | "blue" | "green";
 
 interface ITypography {
   color?: ITextColor;
@@ -19,6 +20,7 @@ export function Typography({ color, weight = "400", label, alignText, style }: I
     if (color === "white") return styles.white;
     if (color === "red") return styles.red;
     if (color === "blue") return styles.blue;
+    if (color === "green") return styles.green;
   };
 
   const getWeight = () => {
@@ -64,6 +66,9 @@ const styles = StyleSheet.create({
   },
   blue: {
     color: "blue",
+  },
+  green: {
+    color: COLORS.GREEN,
   },
   default: {
     fontWeight: "400",
