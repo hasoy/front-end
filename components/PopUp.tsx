@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Modal, StyleSheet, OpaqueColorValue } from "react-native";
+import { View, Modal, StyleSheet, OpaqueColorValue, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Typography } from "./Typography";
 import { LABELS } from "../constants/Labels";
@@ -38,14 +38,14 @@ export default function PopUp({
       onRequestClose={toggleModal}
       onDismiss={onDismiss}
     >
-      <View style={styles.modalContainer}>
+      <Pressable style={styles.modalContainer} onPress={() => toggleModal()}>
         <View style={styles.view}>
           {iconName && <AntDesign name={iconName} color={iconColor} size={iconSize} />}
           <Title level="2" label={title} />
           <Typography label={message} />
           <Button label={LABELS.SLUITEN} onPress={toggleModal} style={styles.button} />
         </View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }
@@ -66,10 +66,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(191, 191, 191, 0.9)",
-  },
-  closeButton: {
-    backgroundColor: "red",
-    borderRadius: 10,
-    padding: 10,
   },
 });

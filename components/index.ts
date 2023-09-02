@@ -5,5 +5,19 @@ import Row from "./Row";
 import { Typography } from "./Typography";
 import { Title } from "./Title";
 import Input from "./Input";
+import PopUp from "./PopUp";
+import IngredientInput from "./IngredientInput";
+import RadioButton from "./RadioButton";
 
-export { Button, Card, LinkText, Row, Typography, Title, Input };
+export {
+  Button,
+  Card,
+  LinkText,
+  Row,
+  Typography,
+  Title,
+  Input,
+  PopUp,
+  IngredientInput,
+  RadioButton,
+};

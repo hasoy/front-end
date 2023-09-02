@@ -2,14 +2,11 @@ import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
-import { Typography } from "../components/Typography";
-import Button from "../components/Button";
-import Card from "../components/Card";
+import { Typography, Button, Card, Title } from "../components";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
-import { Title } from "../components";
 
 function TabScanner() {
   const { product } = useStore();
@@ -91,6 +88,11 @@ function TabScanner() {
         </Card>
       ) : (
         <Card padding={false} scroll={false} style={styles.barcodeContainer}>
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={styles.icon}
+            contentFit="contain"
+          />
           <Title label="Scan barcode" level="3" color="white" />
           <BarCodeScanner
             onBarCodeScanned={handleBarCodeScanned}
@@ -107,6 +109,12 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     backgroundColor: "transparent",
+  },
+  icon: {
+    width: 150,
+    height: 150,
+    position: "absolute",
+    top: 0,
   },
   space: {
     justifyContent: "flex-end",

@@ -1,5 +1,7 @@
-import { FlexStyle, ScrollView, StyleProp, StyleSheet, View, useColorScheme } from "react-native";
+import { FlexStyle, ScrollView, StyleProp, StyleSheet, View } from "react-native";
 import { COLORS } from "../constants/Colors";
+import { useThemeColor } from "./Themed";
+
 
 interface ICard {
   children: React.ReactNode;
@@ -16,14 +18,12 @@ export default function Card({
   padding = false,
   style,
 }: ICard) {
-  const colorScheme = useColorScheme();
-  const themeContainerStyle =
-    colorScheme === "light" ? styles.lightContainer : styles.darkContainer;
+  const backgroundColor = useThemeColor({ light: COLORS.BACKGROUND, dark: COLORS.BLACK }, "background");
   const view = (
     <View
       style={[
         styles.container,
-        themeContainerStyle,
+        { backgroundColor },
         row && styles.row,
         padding && styles.padding,
         style && style,
@@ -46,12 +46,6 @@ const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-  },
-  lightContainer: {
-    backgroundColor: COLORS.BACKGROUND,
-  },
-  darkContainer: {
-    backgroundColor: COLORS.BLACK,
   },
   row: {
     flexDirection: "row",
