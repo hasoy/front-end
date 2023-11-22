@@ -1,11 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet } from "react-native";
 import { ITextColor, Typography } from "./Typography";
-import { IIngredient } from "../types/schemas.types";
 
 interface ILinkText {
   label: string;
-  to: string;
+  to?: string;
   color?: ITextColor;
   onPress?: () => void;
 }
@@ -16,7 +15,7 @@ export default function LinkText({ label, color = "red", to, onPress }: ILinkTex
     <Pressable
       onPress={() => {
         onPress();
-        navigation.navigate(to);
+        if (to) navigation.navigate(to as never);
       }}
     >
       <Typography style={[styles.link]} color={color} label={label} weight="600" />

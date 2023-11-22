@@ -21,14 +21,20 @@ import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ReportProduct from "../screens/ReportProduct";
 import AddProduct from "../screens/AddProduct";
+import LoginView from "../screens/LoginView";
+import RegisterView from "../screens/RegisterView";
+import TabProfile from "../screens/TabProfile";
+import { useStore } from "../hooks/useStore";
+import { observer } from "mobx-react-lite";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  const { user } = useStore();
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      {user.jwt ? <RootNavigator /> : <AuthStack />}
     </NavigationContainer>
   );
 }
@@ -39,6 +45,15 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+function AuthStack() {
+  return (
+    <Stack.Navigator initialRouteName="Inloggen">
+      <Stack.Screen name="Inloggen" component={LoginView} />
+      <Stack.Screen name="Registeren" component={RegisterView} />
+    </Stack.Navigator>
+  );
+}
+
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -46,6 +61,8 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
       <Stack.Screen name="TabProductDetails" component={TabProductDetails} />
       <Stack.Screen name="TabIngredient" component={TabIngredient} />
+      <Stack.Screen name="TabScanner" component={TabScanner} />
+      <Stack.Screen name="TabProfile" component={TabProfile} />
       <Stack.Screen name="ReportProduct" component={ReportProduct} />
       <Stack.Screen name="AddProduct" component={AddProduct} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
@@ -89,6 +106,15 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="sticky-note" color={color} />,
         }}
       />
+      <BottomTab.Screen
+        name="TabProfile"
+        component={TabProfile}
+        options={{
+          title: "Profiel",
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -102,3 +128,5 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
+
+export default observer(Navigation);

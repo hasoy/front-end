@@ -27,4 +27,11 @@ export const LABELS = {
   VUL_UW_TOELICHTING_TOE: "Vul uw toelichting toe in max 200 tekens",
   PRODUCT_REPORT_SENT: "Product melding verstuurd",
   PRODUCT_REPORT_SENT_DESC: "JazakAllahu khairan. Uw melding wordt spoedig bekeken in sha Allah",
+  HARAM_INGREDIENTEN: "Haram ingrediënten",
+  HARAM: "Haram",
+  HALAL: "Halal",
+  TWIJFELACHTIG: "Twijfelachtig",
+  GEEN_BARCODE_GEVONDEN: "Geen barcode gevonden",
+  NEW_PRODUCT_ADDED_SUCCESS: "Nieuw product is toegevoegd. Bedankt!",
+  MAAK_FOTO_VAN_INGREDIENTEN: "Maak foto van ingrediënten",
 };

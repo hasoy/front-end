@@ -35,9 +35,24 @@ const linking: LinkingOptions<RootStackParamList> = {
               ReportProduct: "ReportProduct",
             },
           },
+          TabProfile: {
+            screens: {
+              TabProfile: "TabProfile",
+            },
+          },
           AddProduct: {
             screens: {
-              ReportProduct: "AddProduct",
+              AddProduct: "AddProduct",
+            },
+          },
+          LoginView: {
+            screens: {
+              LoginView: "Inloggen",
+            },
+          },
+          RegisterView: {
+            screens: {
+              RegisterView: "Registeren",
             },
           },
         },

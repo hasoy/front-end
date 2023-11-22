@@ -1,4 +1,4 @@
-import { IProduct } from "../../my-app copy/types/schemas.types";
+import { IProduct } from "../../front-end/types/schemas.types";
 
 export const testProduct: IProduct = {
   barcode: "1234567890",

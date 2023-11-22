@@ -29,6 +29,7 @@ export default function PopUp({
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
+    onDismiss();
   };
   return (
     <Modal

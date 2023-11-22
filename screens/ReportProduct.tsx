@@ -16,9 +16,9 @@ import { useNavigation } from "@react-navigation/native";
 
 function ReportProduct() {
   const { product } = useStore();
-  const [reason, setReason] = useState<IReportReason | string>('');
+  const [reason, setReason] = useState<IReportReason | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const [explanation, setExplanation] = useState<string>("");
+  const [explanation, setExplanation] = useState("");
   const navigation = useNavigation();
   const options = [
     { label: LABELS.INCORRECT_PRODUCT_NAAM, value: "incorrectName" },
@@ -52,7 +52,9 @@ function ReportProduct() {
           body: JSON.stringify({ data: newReport }),
         });
         const data = await response.json();
-        setShowModal(true);
+        console.log(data);
+        if (data.data.attributes) setShowModal(true);
+        if (data.error) alert("something went wrong");
       } catch (error) {
         console.error(error);
       }
@@ -67,30 +69,35 @@ function ReportProduct() {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Card padding>
-            <Title label={product.current_scannedProduct?.productName ?? ""} level="1" />
-            {product.current_scannedProduct?.barcode && (
-              <Typography label={`${LABELS.BARCODE}: ${product.current_scannedProduct.barcode}`} />
-            )}
-            <Title label={LABELS.KIES_REDEN} level="3" />
-            <RadioButton data={options} onSelect={(value) => setReason(value)} />
-            <Input
-              setState={setExplanation}
-              value={explanation}
-              label={LABELS.TOELICHTING}
-              placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
-              style={styles.stretch}
+        <Card padding>
+          <Title label={product.current_scannedProduct?.productName ?? ""} level="1" />
+          {product.current_scannedProduct?.barcode && (
+            <Typography label={`${LABELS.BARCODE}: ${product.current_scannedProduct.barcode}`} />
+          )}
+          <Title label={LABELS.KIES_REDEN} level="3" />
+          <RadioButton data={options} onSelect={(value) => setReason(value as IReportReason)} />
+          <Input
+            onChangeText={(text) => setExplanation(text)}
+            value={explanation}
+            label={LABELS.TOELICHTING}
+            placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
+            style={styles.stretch}
+          />
+          <Button
+            label={LABELS.VERZENDEN}
+            onPress={() => sendReport()}
+            style={styles.bottom}
+            disabled={!reason}
+          />
+          {showModal && (
+            <PopUp
+              title={LABELS.PRODUCT_REPORT_SENT}
+              message={LABELS.PRODUCT_REPORT_SENT_DESC}
+              visible={showModal}
+              onDismiss={() => navigation.goBack()}
             />
-            <Button label={LABELS.VERZENDEN} onPress={() => sendReport()} style={styles.bottom} />
-            {showModal && (
-              <PopUp
-                title={LABELS.PRODUCT_REPORT_SENT}
-                message={LABELS.PRODUCT_REPORT_SENT_DESC}
-                visible={showModal}
-                onDismiss={() => navigation.goBack()}
-              />
-            )}
-          </Card>
+          )}
+        </Card>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

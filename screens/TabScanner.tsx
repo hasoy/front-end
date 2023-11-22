@@ -7,14 +7,18 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
+import { URLS } from "../constants/Host";
 
 function TabScanner() {
   const { product } = useStore();
-  const host = "https://lionfish-app-54sxn.ondigitalocean.app";
+  const host = URLS.HOST;
+
   const [hasPermission, setHasPermission] = useState<Boolean>();
+
   const [scanned, setScanned] = useState(false);
   const navigation = useNavigation();
 
+  // get permission for camera
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -23,9 +27,6 @@ function TabScanner() {
     getBarCodeScannerPermissions();
   }, []);
 
-  useEffect(() => {
-    if (product.current_scannedProduct) navigation.navigate("TabProductDetails");
-  }, [product.current_scannedProduct, scanned]);
   if (hasPermission === null) {
     return <Typography label={LABELS.TOESTEMMING_CAMERA_AANVRAAG} />;
   }
@@ -48,7 +49,10 @@ function TabScanner() {
     try {
       const response = await fetch(barcodeQueryUrl);
       const json = await response.json();
-      product.setScannedProduct(json.data ? json.data[0]?.attributes : null);
+      product.setScannedProduct(json.data[0]?.attributes ?? null);
+      if (json.data[0]?.attributes.productName) {
+        navigation.navigate("TabProductDetails");
+      }
     } catch (error) {
       console.error(error);
       return null;
@@ -80,7 +84,7 @@ function TabScanner() {
           <Button
             label={LABELS.PRODUCT_TOEVOEGEN}
             onPress={() => {
-              navigation.navigate("AddProduct");
+              navigation.navigate("AddProduct" as never);
             }}
             style={styles.space}
             type="secondary"
@@ -93,10 +97,14 @@ function TabScanner() {
             style={styles.icon}
             contentFit="contain"
           />
-          <Title label="Scan barcode" level="3" color="white" />
+          <Title label={LABELS.SCAN_BARCODE} level="3" color="white" />
           <BarCodeScanner
             onBarCodeScanned={handleBarCodeScanned}
             style={styles.barcodescanner}
+            barCodeTypes={[
+              BarCodeScanner.Constants.BarCodeType.ean13,
+              BarCodeScanner.Constants.BarCodeType.upc_a,
+            ]}
           ></BarCodeScanner>
         </Card>
       )}

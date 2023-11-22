@@ -12,10 +12,13 @@ import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { useNavigation } from "@react-navigation/native";
 import Accordion from "../components/Accordion";
+import { useEffect, useState } from "react";
+import { PopUp } from "../components";
 
 function TabProductDetails() {
   const { product } = useStore();
   const navigation = useNavigation();
+  const [showModal, setShowModal] = useState(false);
 
   if (product.current_scannedProduct === null)
     return (
@@ -34,17 +37,23 @@ function TabProductDetails() {
     navigation.navigate("ReportProduct");
   };
 
+  useEffect(() => {
+    return () => {
+      setShowModal(false);
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Card padding>
-        <Title label={product.current_scannedProduct.productName} />
+        <Title label={product.current_scannedProduct?.productName} />
         <Button
           label={
             haramIngredients.length > 0
-              ? "Haram"
+              ? LABELS.HARAM
               : doubtfulIngredients.length > 0
-              ? "Twijfel"
-              : "Halal"
+              ? LABELS.TWIJFELACHTIG
+              : LABELS.HALAL
           }
           type={haramIngredients.length > 0 ? "warning" : "primary"}
           onPress={undefined}
@@ -52,15 +61,18 @@ function TabProductDetails() {
         ></Button>
         {haramIngredients.length > 0 && (
           <>
-            <Title label="Haram ingredients" level="3" />
+            <Title label={LABELS.HARAM_INGREDIENTEN} level="3" />
             <Card scroll={false} row style={styles.marginBottom}>
               {haramIngredients.map((haramItem: IIngredient) => {
                 return (
                   <View key={uuid.v4().toString()} style={styles.ingredient}>
                     <LinkText
                       label={haramItem.attributes.name}
-                      to="TabIngredient"
-                      onPress={() => product.setSelectedIngredient(haramItem)}
+                      // to="TabIngredient"
+                      onPress={() => {
+                        product.setSelectedIngredient(haramItem);
+                        setShowModal(true);
+                      }}
                     />
                     <AntDesign name="exclamationcircle" size={18} color="red" />
                   </View>
@@ -78,22 +90,32 @@ function TabProductDetails() {
                   <View key={uuid.v4().toString()} style={styles.ingredient}>
                     <LinkText
                       label={doubtfulItem.attributes.name}
-                      to="TabIngredient"
-                      onPress={() => product.setSelectedIngredient(doubtfulItem)}
+                      // to="TabIngredient"
+                      onPress={() => {
+                        product.setSelectedIngredient(doubtfulItem);
+                        setShowModal(true);
+                      }}
                       color="red"
                     />
                     <AntDesign name="warning" size={18} color="orange" />
                   </View>
                 );
-                
               })}
             </Card>
           </>
         )}
-        {product.current_scannedProduct.ingredients && (
+        {product.current_scannedProduct?.ingredients && (
           <Accordion title={LABELS.INGREDIENTEN}>
-            <Typography label={product.current_scannedProduct.allIngredients ?? ""} />
+            <Typography label={product.current_scannedProduct?.allIngredients ?? ""} />
           </Accordion>
+        )}
+        {showModal && (
+          <PopUp
+            title={product.current_selectedIngredient.attributes.name}
+            message={product.current_selectedIngredient.attributes.explanation}
+            visible={showModal}
+            onDismiss={() => setShowModal(false)}
+          />
         )}
       </Card>
       <View style={styles.footer}>
@@ -124,7 +146,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     justifyContent: "flex-end",
-    margin: 16
+    margin: 16,
   },
 });
 

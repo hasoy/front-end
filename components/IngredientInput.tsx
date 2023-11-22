@@ -1,50 +1,37 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Typography } from "./Typography";
 import Card from "./Card";
-import { useRef, useState } from "react";
-import Button from "./Button";
+import Input from "./Input";
 
-interface IInput {
+interface IIngredientInput {
   value?: string;
   placeholder?: string;
   label?: string;
+  setIngredients?: React.Dispatch<React.SetStateAction<string>>;
 }
-export default function IngredientInput({ placeholder, label }: IInput) {
-  const [inputValue, setInputValue] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([]);
+export default function IngredientInput({
+  placeholder,
+  label,
+  value,
+  setIngredients,
+}: IIngredientInput) {
   const handleInput = (text: string) => {
-    setInputValue(text);
-  };
-
-  const addIngredient = () => {
-    setIngredients([...ingredients, inputValue]);
-    setInputValue("");
-  };
-  const handleKeyDown = () => {
-    addIngredient();
+    setIngredients(text);
   };
 
   return (
     <Card scroll={false}>
       {label && <Typography label={label} style={styles.label} />}
-      {/* TODO only add ingredients if it exists in backend to link to the product */}
-      <TextInput
+      <Input
         style={styles.input}
         onChangeText={handleInput}
-        value={inputValue}
+        value={value}
         placeholder={placeholder}
-        onSubmitEditing={handleKeyDown}
         keyboardType="default"
-        returnKeyType="done"
+        returnKeyType="next"
         blurOnSubmit={false}
+        multiline
       />
-      {ingredients.length > 0 && (
-        <Card row={true} padding={false} scroll={false}>
-          {ingredients.map((ingredient, i) => (
-            <Button label={ingredient} shrink key={ingredient + i} />
-          ))}
-        </Card>
-      )}
     </Card>
   );
 }

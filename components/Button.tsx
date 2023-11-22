@@ -8,6 +8,7 @@ interface IButton {
   type?: "primary" | "secondary" | "warning" | "doubtful";
   shrink?: boolean;
   style?: StyleProp<FlexStyle>;
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -16,6 +17,7 @@ export default function Button({
   type = "primary",
   shrink = false,
   style,
+  disabled = false,
 }: IButton) {
   const getType = () => {
     if (type === "primary") return styles.primary;
@@ -31,7 +33,17 @@ export default function Button({
     if (type === "doubtful") return "white";
   };
   return (
-    <Pressable style={[getType(), shrink && styles.shrink, styles.button, style]} onPress={onPress}>
+    <Pressable
+      disabled={disabled}
+      style={[
+        getType(),
+        shrink && styles.shrink,
+        styles.button,
+        disabled && styles.disabled,
+        style,
+      ]}
+      onPress={onPress}
+    >
       <Typography color={getColor()} label={label} alignText="center" weight="600"></Typography>
     </Pressable>
   );
@@ -43,6 +55,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     display: "flex",
+  },
+  disabled: {
+    backgroundColor: COLORS.GRAY,
+    borderColor: COLORS.GRAY,
+    pointerEvents: "none",
   },
   primary: {
     backgroundColor: COLORS.GREEN,
