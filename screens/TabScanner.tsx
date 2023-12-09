@@ -8,14 +8,21 @@ import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
 import { URLS } from "../constants/Host";
+import { useIsFocused } from "@react-navigation/native";
+import SelectMadhab from "./SelectMadhab";
+import { useFetch } from "../hooks/useFetch";
+import { IScan } from "../types/schemas.types";
+import { PATHS } from "../constants/paths";
 
 function TabScanner() {
-  const { product } = useStore();
+  const { product, user } = useStore();
   const host = URLS.HOST;
+  const isFocused = useIsFocused();
+  const { Fetch } = useFetch();
 
   const [hasPermission, setHasPermission] = useState<Boolean>();
-
   const [scanned, setScanned] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const navigation = useNavigation();
 
   // get permission for camera
@@ -27,6 +34,43 @@ function TabScanner() {
     getBarCodeScannerPermissions();
   }, []);
 
+  const handleBarCodeScanned = async ({ data }) => {
+    product.setBarcode(data);
+    await fetchBarcode(data.toString());
+    setScanned(true);
+  };
+
+  const postScannedProduct = async (productId: string) => {
+    await Fetch<IScan>({
+      url: `${host}${URLS.SCANS}`,
+      method: "POST",
+      body: { scan: user.current_user?.id, product: +productId },
+    });
+  };
+
+  async function fetchBarcode(barcode: string) {
+    const barcodeQueryUrl = `${host}/api/products?filters[barcode][$contains]=${barcode}&${URLS.POPULATE_INGREDIENTS}`;
+    if (scanning) return null;
+    try {
+      setScanning(true);
+      const response = await Fetch({ url: barcodeQueryUrl });
+      if (response.data[0]?.attributes) {
+        product.setScannedProduct({ ...response.data[0]?.attributes, id: response.data[0]?.id });
+        postScannedProduct(response.data[0]?.id);
+        navigation.navigate(PATHS.PRODUCT_DETAILS);
+      } else product.setScannedProduct(null);
+    } catch (error) {
+      console.error(error);
+      product.setScannedProduct(null);
+      return null;
+    } finally {
+      setScanning(false);
+    }
+  }
+
+  if (user.current_user !== null && !user.current_user?.schoolOfThought) {
+    return <SelectMadhab />;
+  }
   if (hasPermission === null) {
     return <Typography label={LABELS.TOESTEMMING_CAMERA_AANVRAAG} />;
   }
@@ -36,27 +80,6 @@ function TabScanner() {
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
       </Card>
     );
-  }
-
-  const handleBarCodeScanned = async ({ data }) => {
-    setScanned(true);
-    product.setBarcode(data);
-    await fetchBarcode(data.toString());
-  };
-
-  async function fetchBarcode(barcode: string) {
-    const barcodeQueryUrl = `${host}/api/products?filters[barcode][$contains]=${barcode}&populate=*`;
-    try {
-      const response = await fetch(barcodeQueryUrl);
-      const json = await response.json();
-      product.setScannedProduct(json.data[0]?.attributes ?? null);
-      if (json.data[0]?.attributes.productName) {
-        navigation.navigate("TabProductDetails");
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
   }
 
   return (
@@ -84,7 +107,7 @@ function TabScanner() {
           <Button
             label={LABELS.PRODUCT_TOEVOEGEN}
             onPress={() => {
-              navigation.navigate("AddProduct" as never);
+              navigation.navigate(PATHS.ADD_PRODUCT as never);
             }}
             style={styles.space}
             type="secondary"
@@ -97,15 +120,18 @@ function TabScanner() {
             style={styles.icon}
             contentFit="contain"
           />
-          <Title label={LABELS.SCAN_BARCODE} level="3" color="white" />
-          <BarCodeScanner
-            onBarCodeScanned={handleBarCodeScanned}
-            style={styles.barcodescanner}
-            barCodeTypes={[
-              BarCodeScanner.Constants.BarCodeType.ean13,
-              BarCodeScanner.Constants.BarCodeType.upc_a,
-            ]}
-          ></BarCodeScanner>
+          <Title label={LABELS.SCAN_BARCODE} level="3" />
+          {isFocused && (
+            <BarCodeScanner
+              onBarCodeScanned={handleBarCodeScanned}
+              style={styles.barcodescanner}
+              barCodeTypes={[
+                BarCodeScanner.Constants.BarCodeType.ean13,
+                BarCodeScanner.Constants.BarCodeType.upc_a,
+                BarCodeScanner.Constants.BarCodeType.ean8,
+              ]}
+            />
+          )}
         </Card>
       )}
     </>
@@ -129,7 +155,7 @@ const styles = StyleSheet.create({
   },
   barcodescanner: {
     width: "100%",
-    height: "30%",
+    height: "50%",
   },
   barcodeContainer: {
     display: "flex",
@@ -137,6 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "gray",
+    width: "100%",
   },
 });
 

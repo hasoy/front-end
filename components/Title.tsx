@@ -8,7 +8,7 @@ interface ITitle {
 }
 export function Title({ label, level = "1", color }: ITitle) {
   const colorScheme = useColorScheme();
-  const themeContainerStyle = colorScheme === "light" ? "black" : "white";
+  const themeContainerStyle = colorScheme === "light" ? "BLACK" : "LIGHT_BACKGROUND";
 
   const getFontSize = () => {
     if (level === "1") return styles.levelOne;
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   levelThree: {
-    fontSize: 24,
+    fontSize: 22,
     marginVertical: 4,
     fontFamily: "RobotoBold",
   },

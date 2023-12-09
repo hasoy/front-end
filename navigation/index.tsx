@@ -9,32 +9,39 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import TabIngredient from "../screens/TabIngredient";
-import ModalScreen from "../screens/ModalScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
-import TabProductDetails from "../screens/TabProductDetails";
-import TabScanner from "../screens/TabScanner";
 import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
-import ReportProduct from "../screens/ReportProduct";
-import AddProduct from "../screens/AddProduct";
-import LoginView from "../screens/LoginView";
-import RegisterView from "../screens/RegisterView";
-import TabProfile from "../screens/TabProfile";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import {
+  AddProduct,
+  LoginView,
+  ModalScreen,
+  NotFoundScreen,
+  RegisterView,
+  ReportProduct,
+  TabProductDetails,
+  TabProfile,
+  TabScanner,
+  ResetPassword,
+  ForgotPassword,
+} from "../screens";
+import { PATHS } from "../constants/paths";
 
 function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const { user } = useStore();
+  useEffect(() => {
+    user.checkLoggedIn();
+  }, []);
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      {user.jwt ? <RootNavigator /> : <AuthStack />}
+      {user.current_user?.jwt ? <RootNavigator /> : <AuthStack />}
     </NavigationContainer>
   );
 }
@@ -47,9 +54,23 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AuthStack() {
   return (
-    <Stack.Navigator initialRouteName="Inloggen">
-      <Stack.Screen name="Inloggen" component={LoginView} />
-      <Stack.Screen name="Registeren" component={RegisterView} />
+    <Stack.Navigator initialRouteName={PATHS.LOGIN}>
+      <Stack.Screen name={PATHS.LOGIN} options={{ title: "Inloggen" }} component={LoginView} />
+      <Stack.Screen
+        name={PATHS.REGISTER}
+        options={{ title: "Registeren" }}
+        component={RegisterView}
+      />
+      <Stack.Screen
+        name={PATHS.FORGOT_PASSWORD}
+        options={{ title: "Wachtwoord vergeten" }}
+        component={ForgotPassword}
+      />
+      <Stack.Screen
+        name={PATHS.RESET_PASSWORD}
+        options={{ title: "Wachtwoord resetten" }}
+        component={ResetPassword}
+      />
     </Stack.Navigator>
   );
 }
@@ -59,12 +80,27 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-      <Stack.Screen name="TabProductDetails" component={TabProductDetails} />
-      <Stack.Screen name="TabIngredient" component={TabIngredient} />
-      <Stack.Screen name="TabScanner" component={TabScanner} />
-      <Stack.Screen name="TabProfile" component={TabProfile} />
-      <Stack.Screen name="ReportProduct" component={ReportProduct} />
-      <Stack.Screen name="AddProduct" component={AddProduct} />
+      <Stack.Screen
+        name={PATHS.PRODUCT_DETAILS}
+        options={{ title: "Product details" }}
+        component={TabProductDetails}
+      />
+      <Stack.Screen
+        name={PATHS.SCANNER}
+        options={{ title: "Barcode scanner" }}
+        component={TabScanner}
+      />
+      <Stack.Screen name={PATHS.PROFILE} options={{ title: "Profiel" }} component={TabProfile} />
+      <Stack.Screen
+        name={PATHS.REPORT_PRODUCT}
+        options={{ title: "Product fout melden" }}
+        component={ReportProduct}
+      />
+      <Stack.Screen
+        name={PATHS.ADD_PRODUCT}
+        options={{ title: "Product toevoegen" }}
+        component={AddProduct}
+      />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -92,7 +128,7 @@ function BottomTabNavigator() {
         name="TabScanner"
         component={TabScanner}
         options={{
-          title: "Scanner",
+          title: "Barcode scanner",
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="barcode" color={color} />,
         }}
@@ -103,7 +139,7 @@ function BottomTabNavigator() {
         options={{
           title: "Product details",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="sticky-note" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="product-hunt" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -112,7 +148,7 @@ function BottomTabNavigator() {
         options={{
           title: "Profiel",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </BottomTab.Navigator>

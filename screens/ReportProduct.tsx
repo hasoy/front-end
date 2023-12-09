@@ -1,10 +1,4 @@
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
 import { Button, Input, Title, Typography, RadioButton, Card, PopUp } from "../components";
@@ -13,9 +7,12 @@ import { useState } from "react";
 import { IReportReason } from "../types/schemas.types";
 import { URLS } from "../constants/Host";
 import { useNavigation } from "@react-navigation/native";
+import { useFetch } from "../hooks/useFetch";
+import { Keyboard } from "react-native";
 
 function ReportProduct() {
-  const { product } = useStore();
+  const { product, user } = useStore();
+  const { Fetch } = useFetch();
   const [reason, setReason] = useState<IReportReason | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [explanation, setExplanation] = useState("");
@@ -32,7 +29,8 @@ function ReportProduct() {
     barcode: string;
     reason: IReportReason | undefined;
     customReason?: string;
-    reportedBy?: string;
+    user?: number;
+    product: number;
   }
 
   const sendReport = async () => {
@@ -40,26 +38,19 @@ function ReportProduct() {
       barcode: product.current_scannedProduct?.barcode ?? "",
       reason: reason ?? null,
       customReason: explanation,
+      user: +user.current_user?.id,
+      product: +product.current_scannedProduct?.id,
     };
-    // TODO add post for new report
     if (product.current_scannedProduct?.barcode) {
-      try {
-        const response = await fetch(`${URLS.HOST}${URLS.REPORTED_PRODUCT}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: newReport }),
-        });
-        const data = await response.json();
-        console.log(data);
-        if (data.data.attributes) setShowModal(true);
-        if (data.error) alert("something went wrong");
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      alert("no barcode");
+      const response = await Fetch({
+        url: `${URLS.HOST}${URLS.REPORTED_PRODUCT}`,
+        method: "POST",
+        body: { data: newReport },
+      });
+      console.log(response);
+      if (response.data.attributes) setShowModal(true);
+      // TODO improve error handling
+      if (response?.error) alert(response.error);
     }
   };
 
@@ -67,14 +58,15 @@ function ReportProduct() {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
+      keyboardVerticalOffset={20}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <Card padding>
           <Title label={product.current_scannedProduct?.productName ?? ""} level="1" />
           {product.current_scannedProduct?.barcode && (
             <Typography label={`${LABELS.BARCODE}: ${product.current_scannedProduct.barcode}`} />
           )}
-          <Title label={LABELS.KIES_REDEN} level="3" />
+          <Title label={LABELS.KIES_REDEN} level="2" />
           <RadioButton data={options} onSelect={(value) => setReason(value as IReportReason)} />
           <Input
             onChangeText={(text) => setExplanation(text)}
@@ -82,6 +74,7 @@ function ReportProduct() {
             label={LABELS.TOELICHTING}
             placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
             style={styles.stretch}
+            multiline
           />
           <Button
             label={LABELS.VERZENDEN}

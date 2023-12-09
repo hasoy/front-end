@@ -25,11 +25,6 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabProductDetails: "TabProductDetails",
             },
           },
-          TabIngredient: {
-            screens: {
-              TabIngredient: "TabIngredient",
-            },
-          },
           ReportProduct: {
             screens: {
               ReportProduct: "ReportProduct",

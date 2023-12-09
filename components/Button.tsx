@@ -1,6 +1,9 @@
-import { StyleSheet, Pressable, StyleProp, FlexStyle } from "react-native";
+import { StyleSheet, Pressable, StyleProp, FlexStyle, useColorScheme } from "react-native";
 import { Typography } from "./Typography";
 import { COLORS } from "../constants/Colors";
+import { useState } from "react";
+import PopUp from "./PopUp";
+import { LABELS } from "../constants/Labels";
 
 interface IButton {
   onPress?: () => void;
@@ -9,6 +12,7 @@ interface IButton {
   shrink?: boolean;
   style?: StyleProp<FlexStyle>;
   disabled?: boolean;
+  warnBeforeAction?: boolean;
 }
 
 export default function Button({
@@ -18,34 +22,54 @@ export default function Button({
   shrink = false,
   style,
   disabled = false,
+  warnBeforeAction = false,
 }: IButton) {
-  const getType = () => {
-    if (type === "primary") return styles.primary;
-    if (type === "secondary") return styles.secondary;
-    if (type === "warning") return styles.warning;
-    if (type === "doubtful") return styles.doubtful;
+  const colorScheme = useColorScheme();
+  const [showModal, setShowModal] = useState(false);
+  const getColor = () => {
+    if (type === "secondary" && colorScheme === "light") return "GREEN";
+    if (type === "secondary" && colorScheme === "dark") return "LIGHT_BACKGROUND";
+    if (type === "primary" || "warning") return "LIGHT_BACKGROUND";
+    if (type === "doubtful") return "ORANGE";
   };
 
-  const getColor = () => {
-    if (type === "primary") return "white";
-    if (type === "secondary") return "green";
-    if (type === "warning") return "white";
-    if (type === "doubtful") return "white";
+  const handlePress = () => {
+    if (warnBeforeAction) {
+      setShowModal(true);
+      return;
+    }
+    onPress();
   };
+
   return (
-    <Pressable
-      disabled={disabled}
-      style={[
-        getType(),
-        shrink && styles.shrink,
-        styles.button,
-        disabled && styles.disabled,
-        style,
-      ]}
-      onPress={onPress}
-    >
-      <Typography color={getColor()} label={label} alignText="center" weight="600"></Typography>
-    </Pressable>
+    <>
+      {showModal ? (
+        <PopUp
+          title={LABELS.LOG_OUT}
+          message={LABELS.ARE_YOU_SURE_LOG_OUT}
+          visible={showModal}
+          onDismiss={() => {
+            setShowModal(false);
+          }}
+          onButtonPress={() => onPress()}
+          buttonLabel={LABELS.LOG_OUT}
+        />
+      ) : (
+        <Pressable
+          disabled={disabled}
+          style={[
+            styles[`${type}${colorScheme}`],
+            shrink && styles.shrink,
+            styles.button,
+            disabled && styles.disabled,
+            style,
+          ]}
+          onPress={handlePress}
+        >
+          <Typography color={getColor()} label={label} textAlign="center" weight="600"></Typography>
+        </Pressable>
+      )}
+    </>
   );
 }
 
@@ -55,30 +79,49 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     display: "flex",
+    justifyContent: "center",
   },
   disabled: {
     backgroundColor: COLORS.GRAY,
     borderColor: COLORS.GRAY,
     pointerEvents: "none",
   },
-  primary: {
+  primarylight: {
     backgroundColor: COLORS.GREEN,
   },
-  secondary: {
-    backgroundColor: COLORS.BACKGROUND,
+  primarydark: {
+    backgroundColor: COLORS.GREEN,
+  },
+  secondarylight: {
+    backgroundColor: COLORS.LIGHT_BACKGROUND,
     borderColor: COLORS.GREEN,
+    borderWidth: 1,
+  },
+  secondarydark: {
+    backgroundColor: COLORS.DARK_GRAY,
+    borderColor: COLORS.LIGHT_BACKGROUND,
     borderWidth: 1,
   },
   shrink: {
     alignSelf: "flex-start",
   },
-  warning: {
+  warningdark: {
     backgroundColor: COLORS.LIGHT_RED,
     alignSelf: "flex-start",
     textTransform: "uppercase",
   },
-  doubtful: {
-    backgroundColor: COLORS.BLUE_2,
+  warninglight: {
+    backgroundColor: COLORS.LIGHT_RED,
+    alignSelf: "flex-start",
+    textTransform: "uppercase",
+  },
+  doubtfullight: {
+    backgroundColor: COLORS.ORANGE,
+    textTransform: "capitalize",
+    alignSelf: "flex-start",
+  },
+  doubtfuldark: {
+    backgroundColor: COLORS.ORANGE,
     textTransform: "capitalize",
     alignSelf: "flex-start",
   },

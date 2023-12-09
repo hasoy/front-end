@@ -11,23 +11,25 @@ export const COLORS = {
   BLUE_2: "#0393B5",
   BLUE_3: "#29D3EB",
   BLUE_4: "#E0FBFF",
+  DARK_GRAY: "#222222",
   BLACK: "#151515",
   GRAY: "#A9A9A9",
   LIGHT_GRAY: "#DFDFDF",
-  BACKGROUND: "#F7FAFB",
+  LIGHT_BACKGROUND: "#F7FAFB",
+  ORANGE: "#FFA500",
 };
 
 export default {
   light: {
-    text: "#000",
-    background: COLORS.BACKGROUND,
+    text: COLORS.BLACK,
+    background: COLORS.LIGHT_BACKGROUND,
     tint: tintColorLight,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: "#fff",
-    background: "#000",
+    text: COLORS.LIGHT_BACKGROUND,
+    background: COLORS.BLACK,
     tint: tintColorDark,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,

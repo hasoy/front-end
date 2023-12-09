@@ -4,40 +4,30 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { useNavigation } from "@react-navigation/native";
 import LoginPage from "../components/LoginPage";
+import { LABELS } from "../constants/Labels";
+import { useFetch } from "../hooks/useFetch";
 
 const host = URLS.HOST;
 const postUrl = `${host}/api/auth/local/register`;
 
 function RegisterView() {
+  const { user } = useStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [registerError, setRegisterError] = useState("");
   const navigation = useNavigation();
+  const { Fetch, loading } = useFetch();
 
-  const { user } = useStore();
   const handleRegister = async () => {
-    try {
-      const response = await fetch(postUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username: email, email, password }),
-      });
-      const data = await response.json();
-      if (data.error) {
-        console.log(data.error);
-        setRegisterError(data.error.message || data.error.details.message);
-        return;
-      }
-      if (data.jwt) {
-        user.setJwt(data.jwt);
-        user.setUser(data.user);
-      }
-    } catch (error) {
-      // console.error(error);
-      // setRegisterError(error.error.message);
+    const response = await Fetch({
+      url: postUrl,
+      method: "POST",
+      body: { username: email, email, password, schoolOfThought: null },
+    });
+    if (response?.jwt) {
+      user.setUser({ ...response.user, jwt: response.jwt });
     }
+    if (response.error) setRegisterError(response?.error?.message);
   };
   return (
     <LoginPage
@@ -45,13 +35,14 @@ function RegisterView() {
       setPassword={setPassword}
       setRegisterError={setRegisterError}
       registerError={registerError}
-      primaryButtonLabel="Registeren"
+      primaryButtonLabel={LABELS.REGISTREREN}
       primaryButtonOnPress={handleRegister}
-      secondaryButtonLabel="Terug"
+      secondaryButtonLabel={LABELS.TERUG}
       secondaryButtonOnPress={navigation.goBack}
-      screenTitle="Inloggen"
+      screenTitle={LABELS.REGISTREREN}
       email={email}
       password={password}
+      loading={loading}
     ></LoginPage>
   );
 }

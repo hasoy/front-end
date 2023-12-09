@@ -2,26 +2,22 @@ import { COLORS } from "../constants/Colors";
 import { Text } from "./Themed";
 import { StyleProp, StyleSheet, ViewStyle, useColorScheme } from "react-native";
 
-export type ITextColor = "white" | "black" | "red" | "blue" | "green";
+export type ITextColor = keyof typeof COLORS;
 
 interface ITypography {
   color?: ITextColor;
-  weight?: "400" | "500" | "600" | "700";
+  weight?: "400" | "500" | "600";
   label: string;
   style?: StyleProp<ViewStyle>;
-  alignText?: "center" | "start" | "end";
+  textAlign?: "center" | "left" | "right";
 }
 
-export function Typography({ color, weight = "400", label, alignText, style }: ITypography) {
-  const colorScheme = useColorScheme();
-  const themeContainerStyle = colorScheme === "light" ? styles.black : styles.white;
-  const getColor = () => {
-    if (color === "black") return styles.black;
-    if (color === "white") return styles.white;
-    if (color === "red") return styles.red;
-    if (color === "blue") return styles.blue;
-    if (color === "green") return styles.green;
+export function Typography({ color, weight = "400", label, textAlign, style }: ITypography) {
+  const Capitalize = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
+  const colorScheme = useColorScheme();
+  color = color ? color : colorScheme === "dark" ? "LIGHT_BACKGROUND" : "BLACK";
 
   const getWeight = () => {
     if (weight === "400") return styles.default;
@@ -29,22 +25,17 @@ export function Typography({ color, weight = "400", label, alignText, style }: I
     if (weight === "600") return styles.extraBold;
   };
 
-  const getPlacement = () => {
-    if (alignText === "center") return styles.center;
-    if (alignText === "end") return styles.end;
-    if (alignText === "start") return styles.start;
-  };
   return (
     <Text
       style={[
         styles.text,
-        color ? getColor() : themeContainerStyle,
+        color && { color: COLORS[color] },
         getWeight(),
-        getPlacement(),
+        textAlign && { textAlign },
         style,
       ]}
     >
-      {label}
+      {Capitalize(label)}
     </Text>
   );
 }
@@ -55,37 +46,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#454545",
   },
-  white: {
-    color: "white",
-  },
-  black: {
-    color: "black",
-  },
-  red: {
-    color: "red",
-  },
-  blue: {
-    color: "blue",
-  },
-  green: {
-    color: COLORS.GREEN,
-  },
   default: {
     fontWeight: "400",
   },
   bold: {
     fontWeight: "500",
+    fontFamily: "RobotoBold",
   },
   extraBold: {
     fontWeight: "600",
-  },
-  center: {
-    textAlign: "center",
-  },
-  end: {
-    textAlign: "right",
-  },
-  start: {
-    textAlign: "left",
+    fontFamily: "RobotoBold",
   },
 });

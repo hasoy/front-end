@@ -1,56 +1,57 @@
 import { action, makeAutoObservable } from "mobx";
-import { IIngredient } from "../types/schemas.types";
 import { Store } from "./index.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "salafi";
+export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
 
 interface IUser {
   email: string;
   username: string;
-  createdAt: string;
-  schoolOfThought: ISchoolOfThought;
+  createdAt?: string;
+  schoolOfThought?: ISchoolOfThought;
   id: number;
+  jwt?: string;
 }
-
-const testUser: IUser = {
-  email: "test@test.com",
-  username: "test",
-  createdAt: "123",
-  schoolOfThought: "maliki",
-  id: 5,
-};
-
-const testJwt = "test";
 
 export class UserStore {
   [key: string]: unknown;
   store: Store;
-  selectedIngredient: IIngredient | null;
-  jwt: string;
   user: IUser;
+  jwt: string;
 
   constructor(rootStore: Store) {
     this.store = rootStore;
-    // TODO remove if not dev
-    this.jwt = testJwt;
-    this.user = testUser;
+    this.user = null;
     makeAutoObservable(this);
   }
 
-  get current_jwt() {
-    return this.jwt;
-  }
-
   get current_user() {
-    return this.user;
+    return JSON.parse(JSON.stringify({ ...this.user }));
   }
 
-  setJwt = action((value: string) => {
-    this.set("jwt", value);
+  setUser = action(async (value: IUser | null) => {
+    this.set("user", value);
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem("logged-in-user", jsonValue);
+    } catch (e) {
+      console.error(e, "error saving user");
+      return null;
+    }
   });
 
-  setUser = action((value: { email: string; username: string; createdAt: string }) => {
-    this.set("user", value);
+  checkLoggedIn = action(async () => {
+    try {
+      const jsonValue = await AsyncStorage?.getItem("logged-in-user");
+      this.setUser(JSON.parse(jsonValue));
+    } catch (e) {
+      console.error(e, "error retrieving user from storage");
+      return null;
+    }
+  });
+
+  logOut = action(async () => {
+    this.setUser(null);
   });
 
   private set = action((attribute: string, value: any) => {

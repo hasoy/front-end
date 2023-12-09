@@ -9,12 +9,12 @@ interface ILinkText {
   onPress?: () => void;
 }
 
-export default function LinkText({ label, color = "red", to, onPress }: ILinkText) {
+export default function LinkText({ label, color = "LIGHT_RED", to, onPress }: ILinkText) {
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        onPress();
+        if (onPress) onPress();
         if (to) navigation.navigate(to as never);
       }}
     >
@@ -26,7 +26,7 @@ export default function LinkText({ label, color = "red", to, onPress }: ILinkTex
 const styles = StyleSheet.create({
   link: {
     textDecorationLine: "underline",
-    fontSize: 14,
+    fontSize: 16,
     paddingRight: 5,
   },
 });

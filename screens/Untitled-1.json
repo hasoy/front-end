@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "id": 10142,
+      "attributes": {
+        "createdAt": "2023-11-23T16:42:28.696Z",
+        "updatedAt": "2023-11-23T21:39:37.543Z",
+        "title": "twijfelachtig ingredient",
+        "doubtful_ingredient": {
+          "data": {
+            "id": 19,
+            "attributes": {
+              "createdAt": "2023-11-21T21:00:17.178Z",
+              "updatedAt": "2023-11-21T21:00:17.178Z",
+              "ingredientState": {
+                "id": 44,
+                "title": "dierlijk",
+                "explanation": "bevat dier of dierlijke ingredient",
+                "schoolOfThought": null,
+                "consensus": true
+              }
+            }
+          }
+        },
+        "haram_ingredient": { "data": null }
+      }
+    },
+    {
+      "id": 10141,
+      "attributes": {
+        "createdAt": "2023-11-23T16:32:12.385Z",
+        "updatedAt": "2023-11-23T16:32:12.385Z",
+        "title": "vlees",
+        "doubtful_ingredient": { "data": null },
+        "haram_ingredient": {
+          "data": {
+            "id": 55,
+            "attributes": {
+              "createdAt": "2023-11-21T21:00:17.083Z",
+              "updatedAt": "2023-11-21T21:00:17.083Z",
+              "ingredientState": {
+                "id": 41,
+                "title": "vlees",
+                "explanation": "bevat vlees",
+                "schoolOfThought": null,
+                "consensus": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

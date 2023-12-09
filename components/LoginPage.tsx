@@ -1,5 +1,13 @@
 import { observer } from "mobx-react-lite";
-import { Button, Card, Input, PopUp, Title } from "../components";
+import Card from "./Card";
+import { Title } from "./Title";
+import Input from "./Input";
+import Button from "./Button";
+import PopUp from "./PopUp";
+import { LABELS } from "../constants/Labels";
+import { ActivityIndicator } from "react-native";
+import { COLORS } from "../constants/Colors";
+import LinkText from "./LinkText";
 
 interface ILoginPage {
   email?: string;
@@ -13,6 +21,8 @@ interface ILoginPage {
   secondaryButtonLabel?: string;
   primaryButtonOnPress?: () => Promise<void> | void;
   secondaryButtonOnPress?: () => Promise<void> | void;
+  loading?: boolean;
+  forgotPassword?: boolean;
 }
 
 function LoginPage({
@@ -27,22 +37,29 @@ function LoginPage({
   secondaryButtonLabel,
   secondaryButtonOnPress,
   screenTitle,
+  loading,
+  forgotPassword,
 }: ILoginPage) {
   return (
     <Card padding>
       <Title label={screenTitle}></Title>
       <Input
-        label={"Email"}
+        label={LABELS.EMAIL}
         value={email}
         onChangeText={(text) => setEmail(text)}
         inputMode="email"
       ></Input>
       <Input
-        label={"Password"}
+        label={LABELS.PASSWORD}
         value={password}
         inputMode="text"
         onChangeText={(text) => setPassword(text)}
+        textContentType="password"
+        secureTextEntry={true}
       ></Input>
+      {forgotPassword && (
+        <LinkText label={LABELS.FORGOT_PASSWORD} to="wachtwoord-vergeten"></LinkText>
+      )}
       <Button
         label={primaryButtonLabel}
         onPress={primaryButtonOnPress}
@@ -53,6 +70,7 @@ function LoginPage({
         type="secondary"
         onPress={secondaryButtonOnPress}
       ></Button>
+      {loading && <ActivityIndicator size={"large"} color={COLORS.GREEN} />}
       {registerError && (
         <PopUp
           title={registerError}

@@ -9,9 +9,9 @@ import { useFetch } from "../hooks/useFetch";
 import { PATHS } from "../constants/paths";
 
 const host = URLS.HOST;
-const postUrl = `${host}${URLS.LOGIN}`;
+const postUrl = `${host}/api/auth/local`;
 
-function LoginView() {
+function ResetPassword() {
   const { user } = useStore();
   const navigation = useNavigation();
   const { Fetch, loading } = useFetch();
@@ -54,9 +54,8 @@ function LoginView() {
       email={email}
       password={password}
       loading={loading}
-      forgotPassword
     ></LoginPage>
   );
 }
 
-export default observer(LoginView);
+export default observer(ResetPassword);

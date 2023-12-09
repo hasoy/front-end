@@ -1,19 +1,23 @@
 import { useState } from "react";
-import { View, Modal, StyleSheet, OpaqueColorValue, Pressable } from "react-native";
+import { Modal, StyleSheet, OpaqueColorValue, View, useColorScheme } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Typography } from "./Typography";
 import { LABELS } from "../constants/Labels";
-import { Title } from "./Title";
+import { COLORS } from "../constants/Colors";
 import Button from "./Button";
+import { Title } from "./Title";
 
 interface IModal {
   title: string;
+  subTitle?: string;
   visible: boolean;
   onDismiss: () => void;
   iconColor?: string | OpaqueColorValue;
   iconSize?: number;
   iconName?: string;
   message?: string;
+  buttonLabel?: string;
+  onButtonPress?: () => void;
 }
 
 export default function PopUp({
@@ -24,10 +28,20 @@ export default function PopUp({
   iconColor,
   iconSize,
   iconName,
+  subTitle,
+  buttonLabel,
+  onButtonPress,
 }: IModal) {
   const [modalVisible, setModalVisible] = useState(visible);
+  const colorScheme = useColorScheme();
 
   const toggleModal = () => {
+    setModalVisible(!modalVisible);
+    onDismiss();
+  };
+
+  const handleButton = () => {
+    if (onButtonPress) onButtonPress();
     setModalVisible(!modalVisible);
     onDismiss();
   };
@@ -39,28 +53,45 @@ export default function PopUp({
       onRequestClose={toggleModal}
       onDismiss={onDismiss}
     >
-      <Pressable style={styles.modalContainer} onPress={() => toggleModal()}>
-        <View style={styles.view}>
-          {iconName && <AntDesign name={iconName} color={iconColor} size={iconSize} />}
-          <Title level="2" label={title} />
-          <Typography label={message} />
-          <Button label={LABELS.SLUITEN} onPress={toggleModal} style={styles.button} />
+      <View style={styles.modalContainer}>
+        <View style={[styles.view, colorScheme === "dark" ? styles.dark : styles.light]}>
+          <>
+            {iconName && <AntDesign name={iconName} color={iconColor} size={iconSize} />}
+            <Title level="2" label={title} />
+            {subTitle && <Title level="3" label={subTitle} />}
+            {message && <Typography label={message} style={styles.text} />}
+            {onButtonPress && (
+              <Button label={buttonLabel ?? LABELS.AKKOORD} onPress={handleButton} />
+            )}
+            <Button
+              type={onButtonPress ? "secondary" : "primary"}
+              label={LABELS.TERUG}
+              onPress={toggleModal}
+            />
+          </>
         </View>
-      </Pressable>
+      </View>
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   view: {
-    width: "75%",
-    height: "30%",
-    backgroundColor: "white",
-    display: "flex",
+    width: "85%",
     justifyContent: "space-between",
     alignContent: "center",
     padding: 20,
     borderRadius: 10,
+    gap: 6,
+  },
+  text: {
+    marginVertical: 8,
+  },
+  dark: {
+    backgroundColor: COLORS.DARK_GRAY,
+  },
+  light: {
+    backgroundColor: COLORS.LIGHT_BACKGROUND,
   },
   modalContainer: {
     flex: 1,

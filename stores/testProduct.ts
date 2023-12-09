@@ -1,115 +1,155 @@
 import { IProduct } from "../../front-end/types/schemas.types";
 
-export const testProduct: IProduct = {
-  barcode: "1234567890",
-  productName: "test product",
-  category: "food",
-  land: "nl",
-  explanation:
-    "<p>Volle romige aardappelsalade met aardappelschijfjes</p><p><ul><li>Met knapperige stukjes ui</li><li>Ook heerlijk als lunch of voorgerecht</li><li>Een must bij een goede BBQ of Gourmet</li><li>Vegetarisch</li><li>Prijsfavorieten: topkwaliteit en altijd laaggeprijsd</li></ul></p>",
-  store: "albert heijn",
-  scannedAmount: 5,
+export const haramProduct: IProduct = {
+  barcode: "4065019000249",
+  id: 3114,
+  productName: "haram product but vegan",
+  land: null,
+  store: null,
   allIngredients:
-    "64% aardappel, water, raapolie, ui, suiker, azijn, vrije-uitloopeigeel, zout, maïszetmeel, gemodificeerd maïszetmeel, voedingszuur (melkzuur [E270]), conserveermiddel (kaliumsorbaat [E202], natriumbenzoaat [E211]), specerijen (o.a. mosterd), verdikkingsmiddel (guarpitmeel [E412], xanthaangom [E415]), limoensapconcentraat, peterselie, extract (wortel, peper), knoflook, natuurlijke aromas. Waarvan toegevoegde suikers 3.0g per 100 gram en waarvan toegevoegd zout 1.03g per 100 gram",
+    "Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod.",
+  scannedAmount: null,
+  weight: null,
+  vegan: true,
+  category: null,
+  allergens: null,
+  lifestyle: null,
+  contact: null,
   ingredients: {
     data: [
       {
+        id: 10142,
         attributes: {
-          name: "Vanilla Extract",
-          products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          status: "halal",
-          source: "plant",
-          explanation:
-            "Derived from the vanilla bean, which is a plant source commonly used in food and beverages.",
-          id: 12345,
+          title: "twijfelachtig ingredient",
+          doubtful_ingredient: {
+            data: {
+              id: 19,
+              attributes: {
+                ingredientState: {
+                  id: 44,
+                  title: "dierlijk",
+                  explanation: "bevat dier of dierlijke ingredient",
+                  schoolOfThought: null,
+                  consensus: true,
+                },
+              },
+            },
+          },
+          haram_ingredient: {
+            data: null,
+          },
         },
       },
       {
+        id: 10143,
         attributes: {
-          name: "Vanilla Extract",
-          products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          status: "halal",
-          source: "plant",
-          explanation:
-            "Derived from the vanilla bean, which is a plant source commonly used in food and beverages.",
-          id: 12345,
+          title: "garnaal smaak",
+          haram_ingredient: {
+            data: {
+              id: 20,
+              attributes: {
+                ingredientState: {
+                  id: 45,
+                  title: "garnaal",
+                  explanation: "bevat garnaal",
+                  schoolOfThought: ["hanafi"],
+                  consensus: null,
+                },
+              },
+            },
+          },
+          doubtful_ingredient: {
+            data: null,
+          },
         },
       },
       {
+        id: 10144,
         attributes: {
-          name: "Vanilla Extract",
-          products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          status: "halal",
-          source: "plant",
-          explanation:
-            "Derived from the vanilla bean, which is a plant source commonly used in food and beverages.",
-          id: 12345,
+          title: "haram ingredient 2",
+          doubtful_ingredient: {
+            data: null,
+          },
+          haram_ingredient: {
+            data: {
+              id: 56,
+              attributes: {
+                ingredientState: {
+                  id: 42,
+                  title: "e120",
+                  explanation: "E120 wordt uit insecten gewonnen",
+                  schoolOfThought: ["hanafi"],
+                  consensus: false,
+                },
+              },
+            },
+          },
         },
       },
       {
+        id: 10145,
         attributes: {
-          name: "Vanilla Extract",
-          products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          status: "halal",
-          source: "plant",
-          explanation:
-            "Derived from the vanilla bean, which is a plant source commonly used in food and beverages.",
-          id: 12345,
+          title: "alcohol",
+          doubtful_ingredient: {
+            data: null,
+          },
+          haram_ingredient: {
+            data: {
+              id: 57,
+              attributes: {
+                ingredientState: {
+                  id: 42,
+                  title: "alcohol",
+                  explanation: "alcohol",
+                  consensus: true,
+                },
+              },
+            },
+          },
         },
       },
+    ],
+  },
+};
+
+export const doubtfulProduct: IProduct = {
+  barcode: "4065019000249",
+  id: 3114,
+  productName: "doubtful product",
+  land: null,
+  store: null,
+  allIngredients:
+    "Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod. Lorem ipsum dolor sit amet consectetur adipi sicing elit. Quisquam, quod.",
+  scannedAmount: null,
+  weight: null,
+  vegan: null,
+  category: null,
+  allergens: null,
+  lifestyle: null,
+  contact: null,
+  ingredients: {
+    data: [
       {
+        id: 10142,
         attributes: {
-          name: "Gelatin",
-          products: [11, 12, 13, 14, 15],
-          status: "doubtful",
-          source: "animal",
-          explanation:
-            "Derived from the collagen in animal bones and connective tissue, but can also be made synthetically.",
-          id: 67890,
-        },
-      },
-      {
-        attributes: {
-          name: "Varkensvlees",
-          products: [16, 17],
-          status: "haram",
-          source: "animal",
-          explanation:
-            "Derived from the collagen in animal bones and connective tissue, but can also be made synthetically.",
-          id: 53453,
-        },
-      },
-      {
-        attributes: {
-          name: "Varkensvlees",
-          products: [16, 17],
-          status: "haram",
-          source: "animal",
-          explanation:
-            "Derived from the collagen in animal bones and connective tissue, but can also be made synthetically.",
-          id: 53453,
-        },
-      },
-      {
-        attributes: {
-          name: "Varkensvlees",
-          products: [16, 17],
-          status: "haram",
-          source: "animal",
-          explanation:
-            "Derived from the collagen in animal bones and connective tissue, but can also be made synthetically.",
-          id: 53453,
-        },
-      },
-      {
-        attributes: {
-          name: "Varkensvlees",
-          products: [16, 17],
-          status: "haram",
-          source: "animal",
-          explanation:
-            "Derived from the collagen in animal bones and connective tissue, but can also be made synthetically.",
-          id: 53453,
+          title: "twijfelachtig ingredient",
+          doubtful_ingredient: {
+            data: {
+              id: 19,
+              attributes: {
+                ingredientState: {
+                  id: 44,
+                  title: "dierlijk",
+                  explanation: "bevat dier of dierlijke ingredient",
+                  schoolOfThought: null,
+                  consensus: true,
+                },
+              },
+            },
+          },
+          haram_ingredient: {
+            data: null,
+          },
         },
       },
     ],

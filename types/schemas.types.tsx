@@ -1,34 +1,54 @@
-export type IIngredient = {
-  attributes: {
-    name: string;
-    products: number[];
-    status: IIngredientStatus;
-    source?: "plant" | "syntetic" | "animal";
-    explanation?: string;
-    id?: number;
-  };
-};
+export interface IScan {
+  scan: number;
+  product: number;
+}
 
-export type IIngredientStatus = "haram" | "unknown" | "halal" | "doubtful";
-
-export type IProductVerification = {
-  verifiedBy?: string;
-  oldValue?: string;
-  newValue?: string;
+export interface IIngredientState {
+  consensus?: boolean;
   explanation?: string;
-};
+  schoolOfThought?: string[];
+  title?: string;
+  ingredientName?: string;
+  id?: number;
+}
+
+interface IIngredientComponent {
+  id: number;
+  attributes: {
+    ingredientState: IIngredientState;
+  };
+}
+export interface IIngredientStatus {
+  attributes: {
+    title: string;
+    doubtful_ingredient: {
+      data: IIngredientComponent | null;
+    };
+    haram_ingredient: {
+      data: IIngredientComponent | null;
+    };
+  };
+}
 
 export type IProduct = {
-  barcode: string;
   productName: string;
-  ingredients?: { data: IIngredient[] };
-  category?: string;
+  ingredients?: { data: IIngredientStatus[] };
   land?: string;
-  explanation?: string;
   store?: string;
   allIngredients?: string;
-  scannedAmount?: number;
-  productVerifications?: IProductVerification[];
+  // fix reportedProducts
+  // reportedProducts?:IReportedProduct[]
+  weight?: string;
+  barcode: string;
+  vegan?: boolean;
+  scans?: IScan[];
+  category?: string;
+  allergens?: string[];
+  lifestyle?: string[];
+  // fix contact
+  contact?: string[];
+  explanation?: string;
+  id?: number;
 };
 
 export type IReportReason =

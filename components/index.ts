@@ -8,9 +8,15 @@ import Input from "./Input";
 import PopUp from "./PopUp";
 import IngredientInput from "./IngredientInput";
 import RadioButton from "./RadioButton";
+import Accordion from "./Accordion";
+import LoginPage from "./LoginPage";
+import OcrImage from "./OcrImage";
 
 export {
   Button,
+  OcrImage,
+  LoginPage,
+  Accordion,
   Card,
   LinkText,
   Row,

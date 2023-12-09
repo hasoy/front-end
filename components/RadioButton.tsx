@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import { View, Pressable } from "react-native";
 import { Typography } from "./Typography";
 import uuid from "react-native-uuid";
@@ -15,6 +15,7 @@ interface IRadioButton {
 }
 export default function RadioButton({ data, onSelect }: IRadioButton) {
   const [userOption, setUserOption] = useState("");
+  const colorScheme = useColorScheme();
 
   const selectHandler = (value: string) => {
     onSelect(value);
@@ -30,7 +31,16 @@ export default function RadioButton({ data, onSelect }: IRadioButton) {
             onPress={() => selectHandler(item.value)}
             key={uuid.v4().toString()}
           >
-            <Typography label={item.label} color={item.value === userOption ? "white" : "black"} />
+            <Typography
+              label={item.label}
+              color={
+                colorScheme === "dark"
+                  ? "LIGHT_BACKGROUND"
+                  : item.value === userOption
+                  ? "LIGHT_BACKGROUND"
+                  : "BLACK"
+              }
+            />
           </Pressable>
         );
       })}
