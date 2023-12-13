@@ -1,6 +1,6 @@
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import { StyleSheet, View, SafeAreaView, useColorScheme } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
@@ -8,15 +8,25 @@ import { useNavigation } from "@react-navigation/native";
 import { PopUp, Card, LinkText, Title, Button, Typography, Accordion, Row } from "../components";
 import { PATHS } from "../constants/paths";
 import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
+import { ISchoolOfThought } from "../stores/user.store";
+import { COLORS } from "../constants/Colors";
+import { schoolOfThoughtOptions } from "../constants/picker";
+import BarcodeNotFound from "../components/BarcodeNotFound";
 
 function TabProductDetails() {
   const { product, user } = useStore();
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
+  const colorScheme = useColorScheme();
   const userMadhab = user.current_user.schoolOfThought;
   const reportProduct = () => {
     navigation.navigate(PATHS.REPORT_PRODUCT as never);
   };
+
+  if (product.current_scannedProduct === null && product.current_barcode) {
+    <BarcodeNotFound />;
+  }
 
   if (product.current_scannedProduct === null) {
     return (
@@ -101,7 +111,26 @@ function TabProductDetails() {
       <Card padding>
         <Title label={product.current_scannedProduct?.productName} />
         <Title level="2" label={`Barcode: ${product.current_scannedProduct?.barcode}`} />
-        <Title level="3" label={`Wetschool: ${user.current_user.schoolOfThought}`} />
+        <Row>
+          <Typography weight="500" label={`${LABELS.SCHOOL_OF_THOUGHT}: `}></Typography>
+          <Picker
+            selectedValue={user.current_user?.schoolOfThought}
+            style={styles.picker}
+            onValueChange={(itemValue: ISchoolOfThought) =>
+              user.setUser({ ...user.current_user, schoolOfThought: itemValue })
+            }
+            dropdownIconColor={colorScheme === "dark" ? COLORS.LIGHT_BACKGROUND : COLORS.BLACK}
+          >
+            {schoolOfThoughtOptions.map((option) => (
+              <Picker.Item
+                key={option.value}
+                label={option.label}
+                value={option.value}
+                style={colorScheme === "dark" && styles.darkpicker}
+              />
+            ))}
+          </Picker>
+        </Row>
         {product.current_scannedProduct?.vegan && (
           <Row>
             <Title level="3" label={LABELS.VEGAN} />
@@ -210,6 +239,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     margin: 16,
     gap: 8,
+  },
+  picker: {
+    width: "50%",
+  },
+  darkpicker: {
+    color: COLORS.LIGHT_BACKGROUND,
+    backgroundColor: COLORS.BLACK,
+    borderColor: COLORS.BLACK,
   },
 });
 

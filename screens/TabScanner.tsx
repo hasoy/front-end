@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
-import { Typography, Button, Card, Title } from "../components";
+import { Typography, Card, Title } from "../components";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
@@ -13,6 +13,7 @@ import SelectMadhab from "./SelectMadhab";
 import { useFetch } from "../hooks/useFetch";
 import { IScan } from "../types/schemas.types";
 import { PATHS } from "../constants/paths";
+import BarcodeNotFound from "../components/BarcodeNotFound";
 
 function TabScanner() {
   const { product, user } = useStore();
@@ -32,6 +33,7 @@ function TabScanner() {
       setHasPermission(status === "granted");
     };
     getBarCodeScannerPermissions();
+    user.checkLoggedIn();
   }, []);
 
   const handleBarCodeScanned = async ({ data }) => {
@@ -44,31 +46,37 @@ function TabScanner() {
     await Fetch<IScan>({
       url: `${host}${URLS.SCANS}`,
       method: "POST",
-      body: { scan: user.current_user?.id, product: +productId },
+      body: {
+        // scan: user.current_user?.id,
+        product: +productId,
+      },
     });
   };
 
   async function fetchBarcode(barcode: string) {
     const barcodeQueryUrl = `${host}/api/products?filters[barcode][$contains]=${barcode}&${URLS.POPULATE_INGREDIENTS}`;
-    if (scanning) return null;
+    if (scanning) return;
     try {
       setScanning(true);
       const response = await Fetch({ url: barcodeQueryUrl });
       if (response.data[0]?.attributes) {
         product.setScannedProduct({ ...response.data[0]?.attributes, id: response.data[0]?.id });
         postScannedProduct(response.data[0]?.id);
-        navigation.navigate(PATHS.PRODUCT_DETAILS);
+        navigation.navigate(PATHS.PRODUCT_DETAILS as never);
       } else product.setScannedProduct(null);
     } catch (error) {
       console.error(error);
       product.setScannedProduct(null);
-      return null;
+      return;
     } finally {
       setScanning(false);
     }
   }
 
-  if (user.current_user !== null && !user.current_user?.schoolOfThought) {
+  if (
+    // user.current_user !== null &&
+    !user.current_user?.schoolOfThought
+  ) {
     return <SelectMadhab />;
   }
   if (hasPermission === null) {
@@ -85,34 +93,7 @@ function TabScanner() {
   return (
     <>
       {scanned && !product.current_scannedProduct ? (
-        <Card padding={scanned} scroll={false}>
-          <Title
-            level="2"
-            label={`${LABELS.BARCODE}:${
-              product.current_barcode
-            } ${LABELS.NIET_GEVONDEN.toLowerCase()}`}
-          />
-          <Image
-            style={styles.image}
-            source={require("../assets/images/scan.png")}
-            contentFit="contain"
-          />
-          <Button
-            label={LABELS.OPNIEUW_SCANNEN}
-            onPress={() => {
-              setScanned(false);
-            }}
-            style={styles.space}
-          />
-          <Button
-            label={LABELS.PRODUCT_TOEVOEGEN}
-            onPress={() => {
-              navigation.navigate(PATHS.ADD_PRODUCT as never);
-            }}
-            style={styles.space}
-            type="secondary"
-          />
-        </Card>
+        <BarcodeNotFound />
       ) : (
         <Card padding={false} scroll={false} style={styles.barcodeContainer}>
           <Image
@@ -139,11 +120,6 @@ function TabScanner() {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "transparent",
-  },
   icon: {
     width: 150,
     height: 150,

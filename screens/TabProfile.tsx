@@ -33,23 +33,21 @@ function TabProfile({}: ITabProfile) {
     <SafeAreaView style={styles.container}>
       <Card padding>
         <Title label="Profiel"></Title>
-        <Row>
+        {/* <Row>
           <Typography weight="500" label={LABELS.USERNAME}></Typography>
           <Typography label={user.current_user?.username}></Typography>
         </Row>
         <Row>
           <Typography weight="500" label={LABELS.EMAIL}></Typography>
           <Typography label={user.current_user?.email}></Typography>
-        </Row>
-        <Row>
+        </Row> */}
+        {/* <Row>
           <Typography weight="500" label={LABELS.SCHOOL_OF_THOUGHT}></Typography>
           <Picker
-            selectedValue={user.current_user.schoolOfThought}
+            selectedValue={user.current_user?.schoolOfThought}
             style={styles.picker}
-            onValueChange={
-              (itemValue: ISchoolOfThought) =>
-                user.setUser({ ...user.current_user, schoolOfThought: itemValue })
-              // TODO send request to backend to update user with /me route
+            onValueChange={(itemValue: ISchoolOfThought) =>
+              user.setUser({ ...user.current_user, schoolOfThought: itemValue })
             }
             dropdownIconColor={colorScheme === "dark" ? COLORS.LIGHT_BACKGROUND : COLORS.BLACK}
           >
@@ -62,11 +60,11 @@ function TabProfile({}: ITabProfile) {
               />
             ))}
           </Picker>
-        </Row>
+        </Row> */}
       </Card>
-      <View style={styles.logoutButton}>
+      {/* <View style={styles.logoutButton}>
         <Button label={LABELS.LOG_OUT} onPress={() => user.logOut()} warnBeforeAction></Button>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }

@@ -38,7 +38,7 @@ function ReportProduct() {
       barcode: product.current_scannedProduct?.barcode ?? "",
       reason: reason ?? null,
       customReason: explanation,
-      user: +user.current_user?.id,
+      // user: +user.current_user?.id,
       product: +product.current_scannedProduct?.id,
     };
     if (product.current_scannedProduct?.barcode) {

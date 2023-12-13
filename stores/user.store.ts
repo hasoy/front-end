@@ -5,19 +5,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
 
 interface IUser {
-  email: string;
-  username: string;
-  createdAt?: string;
+  // email: string;
+  // username: string;
+  // createdAt?: string;
   schoolOfThought?: ISchoolOfThought;
-  id: number;
-  jwt?: string;
+  // id: number;
+  // jwt?: string;
 }
 
 export class UserStore {
   [key: string]: unknown;
   store: Store;
   user: IUser;
-  jwt: string;
+  // jwt: string;
 
   constructor(rootStore: Store) {
     this.store = rootStore;

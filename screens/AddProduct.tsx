@@ -33,7 +33,7 @@ function AddProduct() {
       barcode: product.current_barcode,
       productName,
       ingredients: ingredients.split(/\n|;|:|;/gm).join(", "),
-      addedBy: user.current_user.id,
+      // addedBy: user.current_user.id,
     };
     if (product.current_barcode) {
       const response = await Fetch({
@@ -70,12 +70,12 @@ function AddProduct() {
           value={productName}
           label={LABELS.PRODUCT_NAAM}
         />
+        <OcrImage setValue={setIngredients} />
         <IngredientInput
           label={LABELS.VOEG_INGREDIENTEN_TOE}
           setIngredients={setIngredients}
           value={ingredients}
         />
-        <OcrImage setValue={setIngredients} />
       </Card>
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}
@@ -90,7 +90,7 @@ function AddProduct() {
           onDismiss={() => {
             setShowModal(false);
             // TODO handle when added product
-            // navigation.navigate("TabProductDetails");
+            navigation.navigate("TabProductDetails" as never);
           }}
         />
       )}

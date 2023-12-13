@@ -16,7 +16,8 @@ export const useFetch = () => {
       method,
       headers: {
         "Content-Type": "application/json",
-        ...(user.current_user?.jwt ? { Authorization: `Bearer ${user.current_user.jwt}` } : {}),
+        // uncomment for JWT
+        // ...(user.current_user?.jwt ? { Authorization: `Bearer ${user.current_user.jwt}` } : {}),
       },
     };
 

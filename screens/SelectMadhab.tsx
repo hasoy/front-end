@@ -21,7 +21,10 @@ function SelectMadhab() {
   ];
 
   const saveMadhab = () => {
-    user.setUser({ ...user.current_user, schoolOfThought: madhab });
+    user.setUser({
+      // ...user.current_user,
+      schoolOfThought: madhab,
+    });
   };
 
   return (

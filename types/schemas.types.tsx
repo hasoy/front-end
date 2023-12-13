@@ -1,5 +1,5 @@
 export interface IScan {
-  scan: number;
+  scan?: number;
   product: number;
 }
 

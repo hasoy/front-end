@@ -41,7 +41,9 @@ function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      {user.current_user?.jwt ? <RootNavigator /> : <AuthStack />}
+      {/* uncomment for auth (also revisit user.store) */}
+      {/* {user.current_user?.jwt ? <RootNavigator /> : <AuthStack />} */}
+      <RootNavigator />
     </NavigationContainer>
   );
 }
@@ -52,28 +54,29 @@ function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function AuthStack() {
-  return (
-    <Stack.Navigator initialRouteName={PATHS.LOGIN}>
-      <Stack.Screen name={PATHS.LOGIN} options={{ title: "Inloggen" }} component={LoginView} />
-      <Stack.Screen
-        name={PATHS.REGISTER}
-        options={{ title: "Registeren" }}
-        component={RegisterView}
-      />
-      <Stack.Screen
-        name={PATHS.FORGOT_PASSWORD}
-        options={{ title: "Wachtwoord vergeten" }}
-        component={ForgotPassword}
-      />
-      <Stack.Screen
-        name={PATHS.RESET_PASSWORD}
-        options={{ title: "Wachtwoord resetten" }}
-        component={ResetPassword}
-      />
-    </Stack.Navigator>
-  );
-}
+// uncomment for auth/logging in(missing forgot/reset password)
+// function AuthStack() {
+//   return (
+//     <Stack.Navigator initialRouteName={PATHS.LOGIN}>
+//       <Stack.Screen name={PATHS.LOGIN} options={{ title: "Inloggen" }} component={LoginView} />
+//       <Stack.Screen
+//         name={PATHS.REGISTER}
+//         options={{ title: "Registeren" }}
+//         component={RegisterView}
+//       />
+//       <Stack.Screen
+//         name={PATHS.FORGOT_PASSWORD}
+//         options={{ title: "Wachtwoord vergeten" }}
+//         component={ForgotPassword}
+//       />
+//       <Stack.Screen
+//         name={PATHS.RESET_PASSWORD}
+//         options={{ title: "Wachtwoord resetten" }}
+//         component={ResetPassword}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
 
 function RootNavigator() {
   return (
@@ -90,7 +93,7 @@ function RootNavigator() {
         options={{ title: "Barcode scanner" }}
         component={TabScanner}
       />
-      <Stack.Screen name={PATHS.PROFILE} options={{ title: "Profiel" }} component={TabProfile} />
+      {/* <Stack.Screen name={PATHS.PROFILE} options={{ title: "Profiel" }} component={TabProfile} /> */}
       <Stack.Screen
         name={PATHS.REPORT_PRODUCT}
         options={{ title: "Product fout melden" }}
@@ -142,7 +145,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="product-hunt" color={color} />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="TabProfile"
         component={TabProfile}
         options={{
@@ -150,7 +153,7 @@ function BottomTabNavigator() {
           tabBarShowLabel: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }
