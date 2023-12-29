@@ -8,4 +8,5 @@ export const PATHS = {
   PROFILE: "profiel",
   REPORT_PRODUCT: "product-fout-melden",
   ADD_PRODUCT: "product-toevoegen",
+  CONTACT: "contact",
 };

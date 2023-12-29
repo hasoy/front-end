@@ -5,8 +5,9 @@ interface ITitle {
   label: string;
   level?: "1" | "2" | "3" | "4";
   color?: ITextColor;
+  style?: any;
 }
-export function Title({ label, level = "1", color }: ITitle) {
+export function Title({ label, level = "1", color, style }: ITitle) {
   const colorScheme = useColorScheme();
   const themeContainerStyle = colorScheme === "light" ? "BLACK" : "LIGHT_BACKGROUND";
 
@@ -15,7 +16,9 @@ export function Title({ label, level = "1", color }: ITitle) {
     if (level === "2") return styles.levelTwo;
     if (level === "3") return styles.levelThree;
   };
-  return <Typography label={label} color={color ?? themeContainerStyle} style={getFontSize()} />;
+  return (
+    <Typography label={label} color={color ?? themeContainerStyle} style={[getFontSize(), style]} />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -31,8 +34,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   levelThree: {
-    fontSize: 22,
-    marginVertical: 4,
+    fontSize: 20,
+    marginVertical: 3,
     fontFamily: "RobotoBold",
   },
 });

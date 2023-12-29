@@ -30,6 +30,7 @@ import {
   ForgotPassword,
 } from "../screens";
 import { PATHS } from "../constants/paths";
+import ContactPage from "../screens/ContactPage";
 
 function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const { user } = useStore();
@@ -104,6 +105,7 @@ function RootNavigator() {
         options={{ title: "Product toevoegen" }}
         component={AddProduct}
       />
+      <Stack.Screen name={PATHS.CONTACT} options={{ title: "Contact" }} component={ContactPage} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -128,7 +130,7 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
-        name="TabScanner"
+        name={PATHS.SCANNER}
         component={TabScanner}
         options={{
           title: "Barcode scanner",
@@ -137,12 +139,21 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabProductDetails"
+        name={PATHS.PRODUCT_DETAILS}
         component={TabProductDetails}
         options={{
           title: "Product details",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="product-hunt" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="sitemap" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name={PATHS.CONTACT}
+        component={ContactPage}
+        options={{
+          title: "Contact",
+          tabBarShowLabel: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="info-circle" color={color} />,
         }}
       />
       {/* <BottomTab.Screen

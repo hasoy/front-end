@@ -1,9 +1,7 @@
 import { StyleSheet, Pressable, StyleProp, FlexStyle, useColorScheme } from "react-native";
-import { Typography } from "./Typography";
 import { COLORS } from "../constants/Colors";
 import { useState } from "react";
-import PopUp from "./PopUp";
-import { LABELS } from "../constants/Labels";
+import { PopUp, Typography } from "./";
 
 interface IButton {
   onPress?: () => void;
@@ -13,6 +11,8 @@ interface IButton {
   style?: StyleProp<FlexStyle>;
   disabled?: boolean;
   warnBeforeAction?: boolean;
+  warnBeforeActionMessage?: string;
+  warnBeforeActionTitle?: string;
 }
 
 export default function Button({
@@ -23,6 +23,8 @@ export default function Button({
   style,
   disabled = false,
   warnBeforeAction = false,
+  warnBeforeActionMessage,
+  warnBeforeActionTitle,
 }: IButton) {
   const colorScheme = useColorScheme();
   const [showModal, setShowModal] = useState(false);
@@ -45,14 +47,14 @@ export default function Button({
     <>
       {showModal ? (
         <PopUp
-          title={LABELS.LOG_OUT}
-          message={LABELS.ARE_YOU_SURE_LOG_OUT}
+          title={warnBeforeActionTitle}
+          message={warnBeforeActionMessage}
           visible={showModal}
           onDismiss={() => {
             setShowModal(false);
           }}
           onButtonPress={() => onPress()}
-          buttonLabel={LABELS.LOG_OUT}
+          buttonLabel={warnBeforeActionTitle}
         />
       ) : (
         <Pressable
@@ -107,12 +109,10 @@ const styles = StyleSheet.create({
   },
   warningdark: {
     backgroundColor: COLORS.LIGHT_RED,
-    alignSelf: "flex-start",
     textTransform: "uppercase",
   },
   warninglight: {
     backgroundColor: COLORS.LIGHT_RED,
-    alignSelf: "flex-start",
     textTransform: "uppercase",
   },
   doubtfullight: {

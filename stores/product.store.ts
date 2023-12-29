@@ -16,7 +16,7 @@ export class ProductStore {
     this.scanned = false;
     // TODO remove if not dev
     // this.scannedProduct = null;
-    this.scannedProduct = doubtfulProduct;
+    this.scannedProduct = haramProduct;
     this.barcode = null;
     this.selectedIngredient = null;
     makeAutoObservable(this);

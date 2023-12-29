@@ -3,36 +3,32 @@ export interface IScan {
   product: number;
 }
 
+export interface IIngredientDetails {
+  title?: string;
+  ingredient_state: { data: { id: number; attributes: IIngredientState } };
+  id?: number;
+}
+
 export interface IIngredientState {
   consensus?: boolean;
   explanation?: string;
   schoolOfThought?: string[];
   title?: string;
-  ingredientName?: string;
+  name?: string;
   id?: number;
+  istihala?: boolean;
+  istihlaak?: boolean;
+  haram?: boolean;
 }
 
-interface IIngredientComponent {
+export interface IIngredient {
+  attributes: IIngredientDetails;
   id: number;
-  attributes: {
-    ingredientState: IIngredientState;
-  };
-}
-export interface IIngredientStatus {
-  attributes: {
-    title: string;
-    doubtful_ingredient: {
-      data: IIngredientComponent | null;
-    };
-    haram_ingredient: {
-      data: IIngredientComponent | null;
-    };
-  };
 }
 
 export type IProduct = {
   productName: string;
-  ingredients?: { data: IIngredientStatus[] };
+  ingredients?: { data: IIngredient[] };
   land?: string;
   store?: string;
   allIngredients?: string;
@@ -45,11 +41,14 @@ export type IProduct = {
   category?: string;
   allergens?: string[];
   lifestyle?: string[];
-  // fix contact
-  contact?: string[];
+  contact?: IContact;
   explanation?: string;
   id?: number;
 };
+interface IContact {
+  name?: string[];
+  address?: string[];
+}
 
 export type IReportReason =
   | "duplicate"

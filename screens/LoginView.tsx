@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { URLS } from "../constants/Host";
+import URLS from "../constants/Host";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useStore } from "../hooks/useStore";

@@ -1,4 +1,4 @@
-import { URLS } from "../constants/Host";
+import URLS from "../constants/Host";
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";

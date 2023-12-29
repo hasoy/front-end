@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet, useColorScheme } from "react-native";
+import { View, StyleSheet, useColorScheme, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Title } from "./Title";
 import { COLORS } from "../constants/Colors";
@@ -14,30 +14,29 @@ const Accordion = ({ title, children }) => {
   };
 
   return (
-    <View
+    <Pressable
       style={{
         ...styles.accordion,
         backgroundColor: themeContainerStyle,
       }}
+      onPress={handlePress}
     >
-      <TouchableOpacity onPress={handlePress}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 10,
-          }}
-        >
-          <Title label={title} level="3"></Title>
-          <AntDesign
-            name={isOpen ? "caretup" : "caretdown"}
-            size={12}
-            color={colorScheme === "light" ? COLORS.BLACK : COLORS.LIGHT_BACKGROUND}
-          />
-        </View>
-      </TouchableOpacity>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
+        <Title label={title} level="3"></Title>
+        <AntDesign
+          name={isOpen ? "caretup" : "caretdown"}
+          size={12}
+          color={colorScheme === "light" ? COLORS.BLACK : COLORS.LIGHT_BACKGROUND}
+        />
+      </View>
       {isOpen && children}
-    </View>
+    </Pressable>
   );
 };
 

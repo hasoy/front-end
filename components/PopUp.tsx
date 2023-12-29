@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Modal, StyleSheet, OpaqueColorValue, View, useColorScheme } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Typography } from "./Typography";
 import { LABELS } from "../constants/Labels";
 import { COLORS } from "../constants/Colors";
-import Button from "./Button";
-import { Title } from "./Title";
+import { Button, Title, Typography } from "./";
 
 interface IModal {
   title: string;

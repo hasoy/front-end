@@ -5,7 +5,7 @@ import { Button, Input, Title, Typography, RadioButton, Card, PopUp } from "../c
 import { LABELS } from "../constants/Labels";
 import { useState } from "react";
 import { IReportReason } from "../types/schemas.types";
-import { URLS } from "../constants/Host";
+import URLS from "../constants/Host";
 import { useNavigation } from "@react-navigation/native";
 import { useFetch } from "../hooks/useFetch";
 import { Keyboard } from "react-native";

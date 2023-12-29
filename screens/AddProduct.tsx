@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { Button, Input, Title } from "../components";
 import { LABELS } from "../constants/Labels";
 import { useState } from "react";
-import { URLS } from "../constants/Host";
+import URLS from "../constants/Host";
 import PopUp from "../components/PopUp";
 import IngredientInput from "../components/IngredientInput";
 import OcrImage from "../components/OcrImage";
@@ -20,6 +20,7 @@ function AddProduct() {
   const [popupLabel, setPopupLabel] = useState("");
   const [ingredients, setIngredients] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
+  const [addedProduct, setAddedProduct] = useState(false);
   const navigation = useNavigation();
 
   interface INewProduct {
@@ -32,7 +33,7 @@ function AddProduct() {
     const newProduct: INewProduct = {
       barcode: product.current_barcode,
       productName,
-      ingredients: ingredients.split(/\n|;|:|;/gm).join(", "),
+      ingredients: ingredients.split(/\n|;|:|,|;/gm).join(", "),
       // addedBy: user.current_user.id,
     };
     if (product.current_barcode) {
@@ -90,7 +91,7 @@ function AddProduct() {
           onDismiss={() => {
             setShowModal(false);
             // TODO handle when added product
-            navigation.navigate("TabProductDetails" as never);
+            navigation.navigate("product-details" as never);
           }}
         />
       )}

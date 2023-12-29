@@ -2,12 +2,12 @@ import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useNavigation } from "@react-navigation/native";
-import { Typography, Card, Title } from "../components";
+import { Typography, Card, Title, Button } from "../components";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
-import { URLS } from "../constants/Host";
+import URLS from "../constants/Host";
 import { useIsFocused } from "@react-navigation/native";
 import SelectMadhab from "./SelectMadhab";
 import { useFetch } from "../hooks/useFetch";
@@ -22,16 +22,15 @@ function TabScanner() {
   const { Fetch } = useFetch();
 
   const [hasPermission, setHasPermission] = useState<Boolean>();
-  const [scanned, setScanned] = useState(false);
   const [scanning, setScanning] = useState(false);
   const navigation = useNavigation();
 
   // get permission for camera
+  const getBarCodeScannerPermissions = async () => {
+    const { status } = await BarCodeScanner.requestPermissionsAsync();
+    setHasPermission(status === "granted");
+  };
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    };
     getBarCodeScannerPermissions();
     user.checkLoggedIn();
   }, []);
@@ -39,7 +38,7 @@ function TabScanner() {
   const handleBarCodeScanned = async ({ data }) => {
     product.setBarcode(data);
     await fetchBarcode(data.toString());
-    setScanned(true);
+    product.setScanned(true);
   };
 
   const postScannedProduct = async (productId: string) => {
@@ -79,20 +78,21 @@ function TabScanner() {
   ) {
     return <SelectMadhab />;
   }
-  if (hasPermission === null) {
-    return <Typography label={LABELS.TOESTEMMING_CAMERA_AANVRAAG} />;
-  }
   if (hasPermission === false) {
     return (
       <Card padding>
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
+        <Button
+          label={LABELS.TOESTEMMING_CAMERA_AANVRAAG}
+          onPress={() => getBarCodeScannerPermissions()}
+        />
       </Card>
     );
   }
 
   return (
     <>
-      {scanned && !product.current_scannedProduct ? (
+      {product.scanned && !product.current_scannedProduct ? (
         <BarcodeNotFound />
       ) : (
         <Card padding={false} scroll={false} style={styles.barcodeContainer}>
