@@ -13,15 +13,16 @@ export default function ScanAgainButtons() {
         label={LABELS.OPNIEUW_SCANNEN}
         onPress={() => {
           product.setScanned(false);
+          product.setScannedProduct(null);
           navigation.navigate(PATHS.SCANNER as never);
         }}
       />
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}
+        type="secondary"
         onPress={() => {
           navigation.navigate(PATHS.ADD_PRODUCT as never);
         }}
-        type="secondary"
       />
     </>
   );

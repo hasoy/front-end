@@ -16,6 +16,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.hasoy.frontend"
     },
+    "scheme": "front-end",
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",

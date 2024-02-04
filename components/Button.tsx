@@ -1,7 +1,14 @@
-import { StyleSheet, Pressable, StyleProp, FlexStyle, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  Pressable,
+  StyleProp,
+  FlexStyle,
+  useColorScheme,
+} from "react-native";
 import { COLORS } from "../constants/Colors";
 import { useState } from "react";
-import { PopUp, Typography } from "./";
+import { Typography } from "./Typography";
+import PopUp from "./PopUp";
 
 interface IButton {
   onPress?: () => void;
@@ -28,9 +35,10 @@ export default function Button({
 }: IButton) {
   const colorScheme = useColorScheme();
   const [showModal, setShowModal] = useState(false);
-  const getColor = () => {
+  const getTextColor = () => {
     if (type === "secondary" && colorScheme === "light") return "GREEN";
-    if (type === "secondary" && colorScheme === "dark") return "LIGHT_BACKGROUND";
+    if (type === "secondary" && colorScheme === "dark")
+      return "LIGHT_BACKGROUND";
     if (type === "primary" || "warning") return "LIGHT_BACKGROUND";
     if (type === "doubtful") return "ORANGE";
   };
@@ -68,7 +76,12 @@ export default function Button({
           ]}
           onPress={handlePress}
         >
-          <Typography color={getColor()} label={label} textAlign="center" weight="600"></Typography>
+          <Typography
+            color={getTextColor()}
+            label={label}
+            textAlign="center"
+            weight="600"
+          ></Typography>
         </Pressable>
       )}
     </>

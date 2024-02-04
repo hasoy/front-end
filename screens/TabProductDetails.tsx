@@ -13,54 +13,44 @@ import { ISchoolOfThought } from "../stores/user.store";
 import { COLORS } from "../constants/Colors";
 import { schoolOfThoughtOptions } from "../constants/picker";
 import BarcodeNotFound from "../components/BarcodeNotFound";
-import ScanAgainButtons from "../components/ScanAgainButtons";
 
 function TabProductDetails() {
   const { product, user } = useStore();
   const navigation = useNavigation();
   const [showModal, setShowModal] = useState(false);
   const colorScheme = useColorScheme();
-  const userMadhab = user.current_user.schoolOfThought;
+  const userMadhab = user?.current_user?.schoolOfThought;
+  if (product?.current_scannedProduct === null && product?.current_barcode) {
+    return <BarcodeNotFound />;
+  }
   const reportProduct = () => {
     navigation.navigate(PATHS.REPORT_PRODUCT as never);
   };
+  const { allIngredients, productName, ingredients } = product?.current_scannedProduct;
 
-  if (product.current_scannedProduct === null && product.current_barcode) {
-    <BarcodeNotFound />;
-  }
-
-  if (product.current_scannedProduct === null) {
-    return (
-      <Card padding>
-        <ScanAgainButtons />
-      </Card>
-    );
-  }
-
-  const filteredIngredients = product.current_scannedProduct.ingredients?.data
-    .filter(
-      (ingredient) =>
-        ingredient.attributes.ingredient_state?.data.id &&
-        (ingredient.attributes.ingredient_state?.data.attributes.schoolOfThought?.includes(
-          userMadhab
-        ) ||
-          ingredient.attributes.ingredient_state?.data.attributes.consensus)
-    )
+  const filteredIngredients = ingredients?.data
+    ?.filter((ingredient) => {
+      const { id, attributes } = ingredient.attributes.ingredient_state?.data;
+      return id && (attributes.schoolOfThought?.includes(userMadhab) || attributes.consensus);
+    })
     .map((current_ingredient) => ({
       ...current_ingredient.attributes.ingredient_state?.data.attributes,
+      ingredientName: current_ingredient.attributes.title,
     }));
-  const haramIngredients = filteredIngredients.filter((ingredient) => ingredient.haram === true);
-  const doubtfulIngredients = filteredIngredients.filter(
+  const haramIngredients = filteredIngredients?.filter((ingredient) => ingredient.haram === true);
+  let hasAlcohol = haramIngredients?.some((ingredient) => ingredient.title === "alcohol");
+  const doubtfulIngredients = filteredIngredients?.filter(
     (ingredient) => ingredient.haram === null || false
   );
 
-  const checkMadhab = () => {
-    for (const haramIngredient of haramIngredients) {
-      if (haramIngredient.title === "alcohol") {
-        return LABELS.HARAM;
-      }
-    }
-    if (product.current_scannedProduct?.vegan) {
+  const halalRegex = /h[ea]laa?l/i;
+  const containsHalalWord = halalRegex.test(allIngredients) || halalRegex.test(productName);
+
+  const checkStatus = () => {
+    if (containsHalalWord) return LABELS.HALAL;
+    // if vegan return halal, except if alcohol is present
+    if (hasAlcohol) return LABELS.HARAM;
+    if (product.current_scannedProduct?.vegan && !hasAlcohol) {
       return LABELS.VEGAN;
     }
     for (const haramIngredient of haramIngredients) {
@@ -83,10 +73,8 @@ function TabProductDetails() {
   };
 
   const getStatusButtonType = () => {
-    const status = checkMadhab();
-    if (status === LABELS.HALAL) {
-      return "primary";
-    }
+    const status = checkStatus();
+    if (status === LABELS.HALAL || status === LABELS.VEGAN) return "primary";
     return "warning";
   };
 
@@ -94,19 +82,6 @@ function TabProductDetails() {
     <SafeAreaView style={styles.container}>
       <Card padding>
         <Title label={product.current_scannedProduct?.productName} />
-        <Row>
-          <AntDesign
-            name={"barcode"}
-            size={22}
-            color={colorScheme === "light" ? COLORS.BLACK : COLORS.LIGHT_BACKGROUND}
-            style={styles.paddingRight}
-          />
-          <Typography
-            weight="500"
-            label={product.current_scannedProduct?.barcode}
-            style={styles.marginVertical}
-          />
-        </Row>
         <Row>
           <Typography weight="500" label={`${LABELS.SCHOOL_OF_THOUGHT}: `}></Typography>
           <Picker
@@ -127,7 +102,7 @@ function TabProductDetails() {
             ))}
           </Picker>
         </Row>
-        {product.current_scannedProduct?.vegan && (
+        {product.current_scannedProduct?.vegan && !hasAlcohol && (
           <Row>
             <Title level="3" label={LABELS.VEGAN} />
             <FontAwesome name="leaf" size={24} color="green" />
@@ -135,55 +110,59 @@ function TabProductDetails() {
         )}
 
         <Button
-          label={checkMadhab()}
+          label={checkStatus()}
           type={getStatusButtonType()}
-          onPress={undefined}
+          onPress={() => undefined}
           shrink={!haramIngredients.length}
-          style={styles.marginVertical}
+          style={styles.statusButton}
         ></Button>
-        {haramIngredients.length > 0 && (
-          <>
-            <Title label={LABELS.HARAM_INGREDIENTEN} level="3" />
-            <Card scroll={false} row style={styles.marginBottom}>
-              {haramIngredients.map((haramItem) => {
-                return (
-                  <View key={uuid.v4().toString()} style={styles.ingredient}>
-                    <LinkText
-                      label={haramItem.title}
-                      onPress={() => {
-                        product.setSelectedIngredient(haramItem);
-                        setShowModal(true);
-                      }}
-                    />
-                    <AntDesign name="exclamationcircle" size={18} color="red" />
-                  </View>
-                );
-              })}
-            </Card>
-          </>
-        )}
-        {doubtfulIngredients.length > 0 && (
-          <>
-            <Title label={LABELS.ONBEKENDE_INGREDIENTEN} level="3" />
-            <Card scroll={false} row>
-              {doubtfulIngredients.map((doubtfulItem) => {
-                return (
-                  <View key={uuid.v4().toString()} style={styles.ingredient}>
-                    <LinkText
-                      label={doubtfulItem.title}
-                      onPress={() => {
-                        product.setSelectedIngredient(doubtfulItem);
-                        setShowModal(true);
-                      }}
-                      color="LIGHT_RED"
-                    />
-                    <AntDesign name="warning" size={18} color="orange" />
-                  </View>
-                );
-              })}
-            </Card>
-          </>
-        )}
+        {haramIngredients.length > 0 &&
+          (hasAlcohol || !product.current_scannedProduct.vegan) &&
+          !containsHalalWord && (
+            <>
+              <Title label={LABELS.HARAM_INGREDIENTEN} level="3" />
+              <Card scroll={false} row style={styles.marginBottom}>
+                {haramIngredients.map((haramItem) => {
+                  return (
+                    <View key={uuid.v4().toString()} style={styles.ingredient}>
+                      <LinkText
+                        label={haramItem.ingredientName}
+                        onPress={() => {
+                          product.setSelectedIngredient(haramItem);
+                          setShowModal(true);
+                        }}
+                      />
+                      <AntDesign name="exclamationcircle" size={18} color="red" />
+                    </View>
+                  );
+                })}
+              </Card>
+            </>
+          )}
+        {doubtfulIngredients.length > 0 &&
+          !product.current_scannedProduct.vegan &&
+          !containsHalalWord && (
+            <>
+              <Title label={LABELS.ONBEKENDE_INGREDIENTEN} level="3" />
+              <Card scroll={false} row>
+                {doubtfulIngredients.map((doubtfulItem) => {
+                  return (
+                    <View key={uuid.v4().toString()} style={styles.ingredient}>
+                      <LinkText
+                        label={doubtfulItem.ingredientName}
+                        onPress={() => {
+                          product.setSelectedIngredient(doubtfulItem);
+                          setShowModal(true);
+                        }}
+                        color="LIGHT_RED"
+                      />
+                      <AntDesign name="warning" size={18} color="orange" />
+                    </View>
+                  );
+                })}
+              </Card>
+            </>
+          )}
         {product.current_scannedProduct?.allIngredients && (
           <Accordion title={LABELS.ALLE_INGREDIENTEN}>
             <Typography label={product.current_scannedProduct?.allIngredients} />
@@ -200,14 +179,13 @@ function TabProductDetails() {
         )}
       </Card>
       <View style={styles.footer}>
-        <Button label={LABELS.PRODUCT_FOUT_MELDEN} onPress={reportProduct} />
         <Button
-          type="secondary"
           label={LABELS.OPNIEUW_SCANNEN}
           onPress={() => {
             navigation.navigate(PATHS.SCANNER as never);
           }}
         />
+        <Button type="secondary" label={LABELS.PRODUCT_FOUT_MELDEN} onPress={reportProduct} />
       </View>
     </SafeAreaView>
   );
@@ -229,8 +207,9 @@ const styles = StyleSheet.create({
   marginBottom: {
     marginBottom: 8,
   },
-  marginVertical: {
+  statusButton: {
     marginVertical: 8,
+    pointerEvents: "none",
   },
   paddingRight: {
     paddingRight: 6,

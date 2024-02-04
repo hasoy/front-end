@@ -39,9 +39,29 @@ export const haramProduct: IProduct = {
   ingredients: {
     data: [
       {
+        id: 1234,
+        attributes: {
+          title: "wijntjuuh",
+          ingredient_state: {
+            data: {
+              id: 551,
+              attributes: {
+                title: "alcohol",
+                consensus: true,
+                istihlaak: false,
+                istihala: false,
+                haram: true,
+                explanation: "Alcohol",
+                schoolOfThought: [],
+              },
+            },
+          },
+        },
+      },
+      {
         id: 12252,
         attributes: {
-          title: "E422 ingredient",
+          title: "E422 ingredientac",
           ingredient_state: {
             data: {
               id: 884,
@@ -50,8 +70,7 @@ export const haramProduct: IProduct = {
                 consensus: false,
                 istihlaak: false,
                 istihala: true,
-                haram: false,
-                regex: "/e422|glycerine|glycerol|suikeralcohol/",
+                haram: null,
                 explanation:
                   "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oli�n en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oli�n, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetari�rs en sommige religies.",
                 schoolOfThought: ["shafi", "hanbali"],

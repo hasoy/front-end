@@ -11,7 +11,6 @@ import URLS from "../constants/Host";
 import { useIsFocused } from "@react-navigation/native";
 import SelectMadhab from "./SelectMadhab";
 import { useFetch } from "../hooks/useFetch";
-import { IScan } from "../types/schemas.types";
 import { PATHS } from "../constants/paths";
 import BarcodeNotFound from "../components/BarcodeNotFound";
 
@@ -37,22 +36,22 @@ function TabScanner() {
 
   const handleBarCodeScanned = async ({ data }) => {
     product.setBarcode(data);
-    await fetchBarcode(data.toString());
+    await fetchBarcode(data?.toString());
     product.setScanned(true);
   };
 
   const postScannedProduct = async (productId: string) => {
-    await Fetch<IScan>({
+    const res = await Fetch({
       url: `${host}${URLS.SCANS}`,
       method: "POST",
       body: {
-        // scan: user.current_user?.id,
-        product: +productId,
+        data: { product: +productId },
       },
     });
   };
 
   async function fetchBarcode(barcode: string) {
+    if (barcode.startsWith("0")) barcode = barcode.slice(1);
     const barcodeQueryUrl = `${host}/api/products?filters[barcode][$contains]=${barcode}&${URLS.POPULATE_INGREDIENTS}`;
     if (scanning) return;
     try {
@@ -66,7 +65,6 @@ function TabScanner() {
     } catch (error) {
       console.error(error);
       product.setScannedProduct(null);
-      return;
     } finally {
       setScanning(false);
     }
@@ -110,6 +108,7 @@ function TabScanner() {
                 BarCodeScanner.Constants.BarCodeType.ean13,
                 BarCodeScanner.Constants.BarCodeType.upc_a,
                 BarCodeScanner.Constants.BarCodeType.ean8,
+                BarCodeScanner.Constants.BarCodeType.code128,
               ]}
             />
           )}

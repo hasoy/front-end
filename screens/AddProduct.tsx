@@ -20,7 +20,6 @@ function AddProduct() {
   const [popupLabel, setPopupLabel] = useState("");
   const [ingredients, setIngredients] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
-  const [addedProduct, setAddedProduct] = useState(false);
   const navigation = useNavigation();
 
   interface INewProduct {
@@ -42,11 +41,6 @@ function AddProduct() {
         method: "POST",
         body: { data: newProduct },
       });
-      if (response?.data?.attributes?.barcode) {
-        setShowModal(true);
-        setPopupLabel(LABELS.NEW_PRODUCT_ADDED_SUCCESS);
-        return;
-      }
       if (response.error) {
         setShowModal(true);
         setPopupLabel(
@@ -54,7 +48,16 @@ function AddProduct() {
             ? LABELS.PRODUCT_BESTAAT_AL
             : response.error.message
         );
+        return;
       }
+      setShowModal(true);
+      setPopupLabel(LABELS.NEW_PRODUCT_ADDED_SUCCESS);
+      const status = await Fetch({
+        url: `${URLS.HOST}${URLS.CHECK_STATUS}`,
+        method: "POST",
+        body: { data: ingredients },
+      });
+      console.log(status, "status");
     } else {
       setShowModal(true);
       setPopupLabel("Geen barcode");

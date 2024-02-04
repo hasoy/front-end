@@ -3,7 +3,8 @@ import { Modal, StyleSheet, OpaqueColorValue, View, useColorScheme } from "react
 import { AntDesign } from "@expo/vector-icons";
 import { LABELS } from "../constants/Labels";
 import { COLORS } from "../constants/Colors";
-import { Button, Title, Typography } from "./";
+import { Title, Typography } from "./";
+import Button from "./Button";
 
 interface IModal {
   title: string;

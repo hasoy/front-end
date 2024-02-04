@@ -1,5 +1,6 @@
 const URLS = {
   HOST: "https://coral-app-6m75s.ondigitalocean.app",
+  CHECK_STATUS: "/api/check-status",
   // HOST: "http://localhost:1338",
   REPORTED_PRODUCT: "/api/reported-products",
   INGREDIENTS: "/api/ingredients",
@@ -12,4 +13,4 @@ const URLS = {
   INGREDIENT_STATE: "/api/ingredient-states",
 };
 
-export default URLS;
+module.exports = URLS;

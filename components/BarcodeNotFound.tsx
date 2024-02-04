@@ -13,7 +13,9 @@ function BarcodeNotFound() {
     <Card scroll={false} padding>
       <Title
         level="2"
-        label={`${LABELS.BARCODE}:${product.current_barcode} ${LABELS.NIET_GEVONDEN.toLowerCase()}`}
+        label={`${LABELS.BARCODE}:${
+          product?.current_barcode
+        } ${LABELS.NIET_GEVONDEN.toLowerCase()}`}
       />
       <Image
         style={styles.image}

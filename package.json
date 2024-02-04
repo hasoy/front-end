@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "expo start -c && s",
     "dev-client": "expo start --dev-client",
-    "android": "expo start --android",
+    "build-android": "eas build --profile preview --platform android",
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
