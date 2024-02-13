@@ -6,10 +6,10 @@ import { haramProduct, doubtfulProduct } from "./testProduct";
 export class ProductStore {
   [key: string]: unknown;
   store: Store;
-  scannedProduct: IProduct | null = null;
+  scannedProduct: IProduct;
   scanned: boolean;
-  barcode: string | null = null;
-  selectedIngredient: IIngredientState | null;
+  barcode: string;
+  selectedIngredient: IIngredientState;
 
   constructor(rootStore: Store) {
     this.store = rootStore;

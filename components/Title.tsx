@@ -9,7 +9,8 @@ interface ITitle {
 }
 export function Title({ label, level = "1", color, style }: ITitle) {
   const colorScheme = useColorScheme();
-  const themeContainerStyle = colorScheme === "light" ? "BLACK" : "LIGHT_BACKGROUND";
+  const themeContainerStyle =
+    colorScheme === "light" ? "BLACK" : "LIGHT_BACKGROUND";
 
   const getFontSize = () => {
     if (level === "1") return styles.levelOne;
@@ -17,7 +18,11 @@ export function Title({ label, level = "1", color, style }: ITitle) {
     if (level === "3") return styles.levelThree;
   };
   return (
-    <Typography label={label} color={color ?? themeContainerStyle} style={[getFontSize(), style]} />
+    <Typography
+      label={label}
+      color={color ?? themeContainerStyle}
+      style={[getFontSize(), style]}
+    />
   );
 }
 

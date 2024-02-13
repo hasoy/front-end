@@ -41,7 +41,7 @@ function TabScanner() {
   };
 
   const postScannedProduct = async (productId: string) => {
-    const res = await Fetch({
+    await Fetch({
       url: `${host}${URLS.SCANS}`,
       method: "POST",
       body: {

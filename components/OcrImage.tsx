@@ -16,7 +16,7 @@ export default function OcrImage({ setValue }: IOcrImage) {
     let result = await ImagePicker?.launchCameraAsync({
       allowsEditing: true,
       base64: true,
-      // exif: true,
+      quality: 1,
     });
     if (!result.canceled) {
       setImage(result.assets[0].uri);

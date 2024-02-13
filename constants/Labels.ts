@@ -1,4 +1,5 @@
 export const LABELS = {
+  EEN_INGREDIENT_PER_REGEL: "Één ingredient per regel",
   CONTACT: {
     WIE_ZIJN_WIJ: { TITLE: "Wie zijn wij?", DESC: "Wie zijn wij" },
     MADHAHIB: { TOELICHTING: "Toelichting", TITLE: "Bepalingen van de wetscholen" },
@@ -32,7 +33,7 @@ export const LABELS = {
   INGREDIENTEN: "Ingrediënten",
   KIES_REDEN: "Selecteer reden van melden",
   LOG_OUT: "Uitloggen",
-  MAAK_FOTO_VAN_INGREDIENTEN: "Automatisch ingredienten toevoegen dmv foto",
+  MAAK_FOTO_VAN_INGREDIENTEN: "Voeg ingredienten toe als foto",
   NEW_PRODUCT_ADDED_SUCCESS: "Nieuw product is toegevoegd. Bedankt!",
   NIET_GEVONDEN: "Niet gevonden",
   NIET_HALAL: "Dit product is niet halal",

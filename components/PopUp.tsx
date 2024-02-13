@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Modal, StyleSheet, OpaqueColorValue, View, useColorScheme } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  OpaqueColorValue,
+  View,
+  useColorScheme,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { LABELS } from "../constants/Labels";
 import { COLORS } from "../constants/Colors";
@@ -33,7 +39,6 @@ export default function PopUp({
 }: IModal) {
   const [modalVisible, setModalVisible] = useState(visible);
   const colorScheme = useColorScheme();
-
   const toggleModal = () => {
     setModalVisible(!modalVisible);
     onDismiss();
@@ -42,7 +47,6 @@ export default function PopUp({
   const handleButton = () => {
     if (onButtonPress) onButtonPress();
     setModalVisible(!modalVisible);
-    onDismiss();
   };
   return (
     <Modal
@@ -53,14 +57,24 @@ export default function PopUp({
       onDismiss={onDismiss}
     >
       <View style={styles.modalContainer}>
-        <View style={[styles.view, colorScheme === "dark" ? styles.dark : styles.light]}>
+        <View
+          style={[
+            styles.view,
+            colorScheme === "dark" ? styles.dark : styles.light,
+          ]}
+        >
           <>
-            {iconName && <AntDesign name={iconName} color={iconColor} size={iconSize} />}
+            {iconName && (
+              <AntDesign name={iconName} color={iconColor} size={iconSize} />
+            )}
             <Title level="2" label={title} />
             {subTitle && <Title level="3" label={subTitle} />}
             {message && <Typography label={message} style={styles.text} />}
             {onButtonPress && (
-              <Button label={buttonLabel ?? LABELS.AKKOORD} onPress={handleButton} />
+              <Button
+                label={buttonLabel ?? LABELS.AKKOORD}
+                onPress={handleButton}
+              />
             )}
             <Button
               type={onButtonPress ? "secondary" : "primary"}

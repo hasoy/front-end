@@ -2,21 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import { LABELS } from "../constants/Labels";
 import Button from "./Button";
 import { PATHS } from "../constants/paths";
-import { useStore } from "../hooks/useStore";
+import { ScanAgainButton } from "./ScanAgainButton";
 
 export default function ScanAgainButtons() {
   const navigation = useNavigation();
-  const { product } = useStore();
   return (
     <>
-      <Button
-        label={LABELS.OPNIEUW_SCANNEN}
-        onPress={() => {
-          product.setScanned(false);
-          product.setScannedProduct(null);
-          navigation.navigate(PATHS.SCANNER as never);
-        }}
-      />
+      <ScanAgainButton />
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}
         type="secondary"

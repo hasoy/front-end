@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import Card from "../components/Card";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Title } from "../components";
+import { Button, Title } from "../components";
 import { LABELS } from "../constants/Labels";
 import { useState } from "react";
 import URLS from "../constants/Host";
@@ -11,6 +11,8 @@ import IngredientInput from "../components/IngredientInput";
 import OcrImage from "../components/OcrImage";
 import { useFetch } from "../hooks/useFetch";
 import { useNavigation } from "@react-navigation/native";
+import { TextInput } from "react-native-paper";
+import { temporaryStatus } from "../helpers/checkStatus";
 
 function AddProduct() {
   const { product, user } = useStore();
@@ -51,13 +53,18 @@ function AddProduct() {
         return;
       }
       setShowModal(true);
-      setPopupLabel(LABELS.NEW_PRODUCT_ADDED_SUCCESS);
-      const status = await Fetch({
-        url: `${URLS.HOST}${URLS.CHECK_STATUS}`,
-        method: "POST",
-        body: { data: ingredients },
-      });
-      console.log(status, "status");
+      const status = await temporaryStatus(ingredients);
+      const haramIngredients = status
+        .map((ingredient) => ingredient?.current_ingredient)
+        .filter((e) => e != undefined);
+      const haramLabel = `${
+        LABELS.NEW_PRODUCT_ADDED_SUCCESS
+      } \nProduct is waarschijnlijk haram door de volgende ingredienten: ${haramIngredients.join(
+        ", "
+      )}.`;
+      const halalLabel = `${LABELS.NEW_PRODUCT_ADDED_SUCCESS} \nGeen haram ingredienten gedetecteerd. Product is waarschijnlijk halal.`;
+      const label = haramIngredients.length ? haramLabel : halalLabel;
+      setPopupLabel(label);
     } else {
       setShowModal(true);
       setPopupLabel("Geen barcode");
@@ -69,17 +76,19 @@ function AddProduct() {
       <Title label={LABELS.BARCODE} level="1" />
       <Title label={product.current_barcode ?? LABELS.GEEN_BARCODE_GEVONDEN} level="2" />
       <Card>
-        <Input
+        <TextInput
           onChangeText={(e) => setProductName(e)}
           value={productName}
           label={LABELS.PRODUCT_NAAM}
+          mode="outlined"
         />
-        <OcrImage setValue={setIngredients} />
         <IngredientInput
           label={LABELS.VOEG_INGREDIENTEN_TOE}
           setIngredients={setIngredients}
           value={ingredients}
+          placeholder={LABELS.EEN_INGREDIENT_PER_REGEL}
         />
+        <OcrImage setValue={setIngredients} />
       </Card>
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}
@@ -94,7 +103,7 @@ function AddProduct() {
           onDismiss={() => {
             setShowModal(false);
             // TODO handle when added product
-            navigation.navigate("product-details" as never);
+            navigation.navigate("scanner" as never);
           }}
         />
       )}

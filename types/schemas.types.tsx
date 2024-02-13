@@ -20,6 +20,16 @@ export interface IIngredientState {
   istihlaak?: boolean;
   haram?: boolean;
 }
+interface IStatusResponse {
+  current_ingredient: string;
+  pattern: {
+    explanation: string;
+    title: String;
+    consensus?: boolean;
+    haram?: boolean;
+    schoolOfThought?: string[];
+  };
+}
 
 export interface IIngredient {
   attributes: IIngredientDetails;

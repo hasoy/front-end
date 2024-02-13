@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
-import { Button, Input, Title, Typography, RadioButton, Card, PopUp } from "../components";
+import { Button, Title, Typography, RadioButton, Card, PopUp } from "../components";
 import { LABELS } from "../constants/Labels";
 import { useState } from "react";
 import { IReportReason } from "../types/schemas.types";
@@ -9,6 +9,8 @@ import URLS from "../constants/Host";
 import { useNavigation } from "@react-navigation/native";
 import { useFetch } from "../hooks/useFetch";
 import { Keyboard } from "react-native";
+import { TextInput } from "react-native-paper";
+import { PATHS } from "../constants/paths";
 
 function ReportProduct() {
   const { product, user } = useStore();
@@ -47,7 +49,6 @@ function ReportProduct() {
         method: "POST",
         body: { data: newReport },
       });
-      console.log(response);
       if (response.data.attributes) setShowModal(true);
       // TODO improve error handling
       if (response?.error) alert(response.error);
@@ -68,13 +69,14 @@ function ReportProduct() {
           )}
           <Title label={LABELS.KIES_REDEN} level="2" />
           <RadioButton data={options} onSelect={(value) => setReason(value as IReportReason)} />
-          <Input
+          <TextInput
             onChangeText={(text) => setExplanation(text)}
             value={explanation}
             label={LABELS.TOELICHTING}
             placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
             style={styles.stretch}
             multiline
+            mode="outlined"
           />
           <Button
             label={LABELS.VERZENDEN}
@@ -88,6 +90,8 @@ function ReportProduct() {
               message={LABELS.PRODUCT_REPORT_SENT_DESC}
               visible={showModal}
               onDismiss={() => navigation.goBack()}
+              onButtonPress={() => navigation.navigate(PATHS.SCANNER as never)}
+              buttonLabel={LABELS.OPNIEUW_SCANNEN}
             />
           )}
         </Card>

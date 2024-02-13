@@ -1,4 +1,4 @@
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import uuid from "react-native-uuid";
 import { StyleSheet, View, SafeAreaView, useColorScheme } from "react-native";
 import { observer } from "mobx-react-lite";
@@ -13,6 +13,7 @@ import { ISchoolOfThought } from "../stores/user.store";
 import { COLORS } from "../constants/Colors";
 import { schoolOfThoughtOptions } from "../constants/picker";
 import BarcodeNotFound from "../components/BarcodeNotFound";
+import { ScanAgainButton } from "../components/ScanAgainButton";
 
 function TabProductDetails() {
   const { product, user } = useStore();
@@ -20,13 +21,22 @@ function TabProductDetails() {
   const [showModal, setShowModal] = useState(false);
   const colorScheme = useColorScheme();
   const userMadhab = user?.current_user?.schoolOfThought;
-  if (product?.current_scannedProduct === null && product?.current_barcode) {
+  if (product.current_scannedProduct === null && product?.current_barcode) {
     return <BarcodeNotFound />;
   }
+  if (product.current_scannedProduct === null) {
+    return (
+      <Card scroll={false} padding>
+        <Title level="2" label={LABELS.SCAN_EEN_PRODUCT} />
+        <ScanAgainButton />
+      </Card>
+    );
+  }
+
   const reportProduct = () => {
     navigation.navigate(PATHS.REPORT_PRODUCT as never);
   };
-  const { allIngredients, productName, ingredients } = product?.current_scannedProduct;
+  const { allIngredients, productName, ingredients } = product.current_scannedProduct;
 
   const filteredIngredients = ingredients?.data
     ?.filter((ingredient) => {
@@ -132,7 +142,7 @@ function TabProductDetails() {
                           setShowModal(true);
                         }}
                       />
-                      <AntDesign name="exclamationcircle" size={18} color="red" />
+                      {/* <AntDesign name="exclamationcircle" size={18} color="red" /> */}
                     </View>
                   );
                 })}
@@ -156,7 +166,7 @@ function TabProductDetails() {
                         }}
                         color="LIGHT_RED"
                       />
-                      <AntDesign name="warning" size={18} color="orange" />
+                      {/* <AntDesign name="warning" size={18} color="orange" /> */}
                     </View>
                   );
                 })}

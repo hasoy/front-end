@@ -41,6 +41,26 @@ export const haramProduct: IProduct = {
       {
         id: 1234,
         attributes: {
+          title: "wijntjuuh2",
+          ingredient_state: {
+            data: {
+              id: 551,
+              attributes: {
+                title: "alcohol",
+                consensus: true,
+                istihlaak: false,
+                istihala: false,
+                haram: true,
+                explanation: "Alcohol",
+                schoolOfThought: [],
+              },
+            },
+          },
+        },
+      },
+      {
+        id: 1234,
+        attributes: {
           title: "wijntjuuh",
           ingredient_state: {
             data: {
