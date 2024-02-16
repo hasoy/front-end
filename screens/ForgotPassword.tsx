@@ -28,7 +28,7 @@ function ForgotPassword() {
       method: "POST",
       body: obj,
     });
-    console.log(data);
+    console.log("test", data);
     if (data.error) {
       setRegisterError(data.error.message || data.error.details.message);
     }
