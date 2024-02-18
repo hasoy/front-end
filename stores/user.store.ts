@@ -3,7 +3,6 @@ import { Store } from "./index.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
-
 interface IUser {
   // email: string;
   // username: string;
@@ -11,6 +10,7 @@ interface IUser {
   schoolOfThought?: ISchoolOfThought;
   // id: number;
   // jwt?: string;
+  allergies?: string[];
 }
 
 export class UserStore {
@@ -21,7 +21,7 @@ export class UserStore {
 
   constructor(rootStore: Store) {
     this.store = rootStore;
-    this.user = null;
+    this.user = { allergies: [] };
     makeAutoObservable(this);
   }
 
@@ -29,7 +29,7 @@ export class UserStore {
     return JSON.parse(JSON.stringify({ ...this.user }));
   }
 
-  setUser = action(async (value: IUser | null) => {
+  setUser = action(async (value: IUser) => {
     this.set("user", value);
     try {
       const jsonValue = JSON.stringify(value);

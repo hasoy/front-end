@@ -14,6 +14,7 @@ import { COLORS } from "../constants/Colors";
 import { schoolOfThoughtOptions } from "../constants/picker";
 import BarcodeNotFound from "../components/BarcodeNotFound";
 import { ScanAgainButton } from "../components/ScanAgainButton";
+import { underlineText } from "../helpers/underlineText";
 
 function TabProductDetails() {
   const { product, user } = useStore();
@@ -153,7 +154,7 @@ function TabProductDetails() {
           !product.current_scannedProduct.vegan &&
           !containsHalalWord && (
             <>
-              <Title label={LABELS.ONBEKENDE_INGREDIENTEN} level="3" />
+              <Title label={LABELS.TWIJFELACHTIGE_INGREDIENTEN} level="3" />
               <Card scroll={false} row>
                 {doubtfulIngredients.map((doubtfulItem) => {
                   return (
@@ -175,7 +176,10 @@ function TabProductDetails() {
           )}
         {product.current_scannedProduct?.allIngredients && (
           <Accordion title={LABELS.ALLE_INGREDIENTEN}>
-            <Typography label={product.current_scannedProduct?.allIngredients} />
+            {underlineText(
+              user.current_user?.allergies ?? [],
+              product.current_scannedProduct?.allIngredients?.toLowerCase()
+            )}
           </Accordion>
         )}
         {showModal && (

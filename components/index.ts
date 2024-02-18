@@ -11,6 +11,7 @@ import RadioButton from "./RadioButton";
 import Accordion from "./Accordion";
 import LoginPage from "./LoginPage";
 import OcrImage from "./OcrImage";
+import { View } from "./Themed";
 
 export {
   Button,
@@ -26,4 +27,5 @@ export {
   PopUp,
   IngredientInput,
   RadioButton,
+  View,
 };

@@ -37,6 +37,7 @@ export const LABELS = {
   NEW_PRODUCT_ADDED_SUCCESS: "Nieuw product is toegevoegd. Bedankt!",
   NIET_GEVONDEN: "Niet gevonden",
   NIET_HALAL: "Dit product is niet halal",
+  TWIJFELACHTIGE_INGREDIENTEN: "Twijfelachtige ingrediënten",
   NIET_HARAM: "Dit product is niet haram",
   OPNIEUW_SCANNEN: "Opnieuw scannen",
   PRODUCT_FOUT_MELDEN: "Product fout melden",
