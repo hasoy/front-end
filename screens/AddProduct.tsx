@@ -9,15 +9,12 @@ import URLS from "../constants/Host";
 import PopUp from "../components/PopUp";
 import IngredientInput from "../components/IngredientInput";
 import OcrImage from "../components/OcrImage";
-import { useFetch } from "../hooks/useFetch";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-paper";
 import { temporaryStatus } from "../helpers/checkStatus";
 
 function AddProduct() {
   const { product, user } = useStore();
-
-  const { Fetch } = useFetch();
   const [productName, setProductName] = useState("");
   const [popupLabel, setPopupLabel] = useState("");
   const [ingredients, setIngredients] = useState<string>("");
@@ -31,44 +28,49 @@ function AddProduct() {
     addedBy?: number;
   }
   const sendProduct = async () => {
+    if (!product.current_barcode) {
+      setShowModal(true);
+      setPopupLabel("Geen barcode");
+      return;
+    }
     const newProduct: INewProduct = {
       barcode: product.current_barcode,
       productName,
       ingredients: ingredients.split(/\n|;|:|,|;/gm).join(", "),
       // addedBy: user.current_user.id,
     };
-    if (product.current_barcode) {
-      const response = await Fetch({
-        url: `${URLS.HOST}${URLS.NEW_PRODUCT}`,
-        method: "POST",
-        body: { data: newProduct },
-      });
-      if (response.error) {
-        setShowModal(true);
-        setPopupLabel(
-          response.error?.message == "This attribute must be unique"
-            ? LABELS.PRODUCT_BESTAAT_AL
-            : response.error.message
-        );
-        return;
-      }
+
+    const formdata = new FormData();
+    formdata.append("data", JSON.stringify(newProduct));
+
+    const request = await fetch(`${URLS.HOST}${URLS.NEW_PRODUCT}`, {
+      method: "post",
+      body: formdata,
+    });
+    const response = await request.json();
+    if (response.error) {
       setShowModal(true);
-      const status = await temporaryStatus(ingredients);
-      const haramIngredients = status
-        .map((ingredient) => ingredient?.current_ingredient)
-        .filter((e) => e != undefined);
-      const haramLabel = `${
-        LABELS.NEW_PRODUCT_ADDED_SUCCESS
-      } \nProduct is waarschijnlijk haram door de volgende ingredienten: ${haramIngredients.join(
-        ", "
-      )}.`;
-      const halalLabel = `${LABELS.NEW_PRODUCT_ADDED_SUCCESS} \nGeen haram ingredienten gedetecteerd. Product is waarschijnlijk halal.`;
-      const label = haramIngredients.length ? haramLabel : halalLabel;
-      setPopupLabel(label);
-    } else {
-      setShowModal(true);
-      setPopupLabel("Geen barcode");
+      setPopupLabel(
+        // TODO improve error messages
+        response.error?.message == "This attribute must be unique"
+          ? LABELS.PRODUCT_BESTAAT_AL
+          : response.error.message
+      );
+      return;
     }
+    const status = await temporaryStatus(ingredients);
+    const haramIngredients = status
+      .map((ingredient) => ingredient?.current_ingredient)
+      .filter((e) => e != undefined);
+    const haramLabel = `${
+      LABELS.NEW_PRODUCT_ADDED_SUCCESS
+    } \nProduct is waarschijnlijk haram door de volgende ingredienten: ${haramIngredients.join(
+      ", "
+    )}.`;
+    const halalLabel = `${LABELS.NEW_PRODUCT_ADDED_SUCCESS} \nGeen haram ingredienten gedetecteerd. Product is waarschijnlijk halal.`;
+    const label = haramIngredients.length ? haramLabel : halalLabel;
+    setShowModal(true);
+    setPopupLabel(label);
   };
 
   return (

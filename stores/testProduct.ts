@@ -154,7 +154,6 @@ export const doubtfulProduct: IProduct = {
                 istihlaak: false,
                 istihala: true,
                 haram: null,
-                regex: "/e422|glycerine|glycerol|suikeralcohol/",
                 explanation:
                   "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oli�n en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oli�n, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetari�rs en sommige religies.",
                 schoolOfThought: ["shafi", "hanbali"],
