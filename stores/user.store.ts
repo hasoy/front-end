@@ -4,10 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
 
-export type ICustomAllergy = {
-  id: string;
-  value: string;
-};
 interface IUser {
   // email: string;
   // username: string;
@@ -16,7 +12,7 @@ interface IUser {
   // id: number;
   // jwt?: string;
   allergies?: string[];
-  customAllergies?: ICustomAllergy[];
+  customAllergies?: string[];
 }
 
 export class UserStore {
@@ -33,6 +29,10 @@ export class UserStore {
 
   get current_user() {
     return JSON.parse(JSON.stringify({ ...this.user }));
+  }
+
+  get custom_allergies() {
+    return this.user.customAllergies;
   }
 
   setUser = action(async (value: IUser) => {

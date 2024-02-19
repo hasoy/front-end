@@ -15,7 +15,7 @@ function ContactPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const customAllergyRef = useRef(null);
   let { allergies } = user.current_user;
-  let { customAllergies } = user.current_user;
+  let tempAllergies = user.custom_allergies;
   const FAQ = [
     { title: LABELS.CONTACT.WIE_ZIJN_WIJ.TITLE, desc: LABELS.CONTACT.WIE_ZIJN_WIJ.DESC },
     { title: LABELS.CONTACT.MADHAHIB.TITLE, desc: LABELS.CONTACT.MADHAHIB.TOELICHTING },
@@ -24,7 +24,15 @@ function ContactPage() {
     { title: LABELS.CONTACT.HELP.TITLE, desc: LABELS.CONTACT.HELP.DESC },
   ];
   if (!allergies) allergies = [];
-  if (!customAllergies) customAllergies = [];
+  if (!user.custom_allergies) tempAllergies = [];
+
+  const removeCustomFilter = (item: string) => {
+    user.setUser({
+      ...user.current_user,
+      customAllergies: tempAllergies?.filter((allergie) => allergie !== item),
+    });
+  };
+
   return (
     <Card padding scroll={false}>
       <Text variant="headlineMedium">{LABELS.FAQ}</Text>
@@ -72,7 +80,7 @@ function ContactPage() {
             }
             user.setUser({
               ...user.current_user,
-              customAllergies: [...customAllergies, customAllergy],
+              customAllergies: [...tempAllergies, customAllergy],
             });
             setCustomAllergy("");
             customAllergyRef.current.focus();
@@ -81,17 +89,12 @@ function ContactPage() {
       ></TextInput>
       {errorMessage && <HelperText type={"error"}>{errorMessage}</HelperText>}
       <View style={styles.chips}>
-        {customAllergies.map((item) => (
+        {tempAllergies.map((item) => (
           <Chip
             key={item}
             selected={allergies?.includes(item)}
             style={styles.selected}
-            onClose={() => {
-              user.setUser({
-                ...user.current_user,
-                customAllergies: customAllergies?.filter((allergie) => allergie !== item),
-              });
-            }}
+            onClose={() => removeCustomFilter(item)}
           >
             {item}
           </Chip>
