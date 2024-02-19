@@ -6,7 +6,7 @@ export const haramProduct: IProduct = {
   land: "Netherlands",
   store: "Albert Heijn",
   allIngredients:
-    "Ingrediënten: Water, Pinda, suiker, maltodextrine, voedingszuur: citroenzuur, natriumchloride, zuurteregelaars: magnesiumlactaat, natriumcitraat, kaliumfosfaat en calciumfosfaat, conserveermiddel: E202, vitamines: B3, E, B5, B6 en H, stabilisatoren: arabische gom en glycerol-esters van houthars, natuurlijke aroma’s. Osmolaliteit 290-320 mOsm/L",
+    "Ingrediënten: Water, Pinda,pind,pindakaas,pindas,pinda's, suiker, maltodextrine, voedingszuur: citroenzuur, natriumchloride, zuurteregelaars: magnesiumlactaat, natriumcitraat, kaliumfosfaat en calciumfosfaat, conserveermiddel: E202, vitamines: B3, E, B5, B6 en H, stabilisatoren: arabische gom en glycerol-esters van houthars, natuurlijke aroma’s. Osmolaliteit 290-320 mOsm/L",
   weight: "500 Milliliter",
   vegan: false,
   category: "Frisdrank, sappen, koffie, thee/Sportdrank flesjes",
@@ -18,7 +18,7 @@ export const haramProduct: IProduct = {
     "zonder_vis",
     "dieet_vegetarisch",
     "zonder_lupine",
-    // "zonder_pindas",
+    "zonder_pindas",
     "zonder_mosterd",
     "zonder_lactose",
     "zonder_sulfiet",

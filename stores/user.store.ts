@@ -3,6 +3,11 @@ import { Store } from "./index.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
+
+export type ICustomAllergy = {
+  id: string;
+  value: string;
+};
 interface IUser {
   // email: string;
   // username: string;
@@ -11,6 +16,7 @@ interface IUser {
   // id: number;
   // jwt?: string;
   allergies?: string[];
+  customAllergies?: ICustomAllergy[];
 }
 
 export class UserStore {
@@ -21,7 +27,7 @@ export class UserStore {
 
   constructor(rootStore: Store) {
     this.store = rootStore;
-    this.user = { allergies: [] };
+    this.user = { allergies: [], customAllergies: [] };
     makeAutoObservable(this);
   }
 

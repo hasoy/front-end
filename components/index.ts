@@ -1,31 +1,14 @@
-import Button from "./Button";
-import Card from "./Card";
-import LinkText from "./LinkText";
-import Row from "./Row";
-import { Typography } from "./Typography";
-import { Title } from "./Title";
-import Input from "./Input";
-import PopUp from "./PopUp";
-import IngredientInput from "./IngredientInput";
-import RadioButton from "./RadioButton";
-import Accordion from "./Accordion";
-import LoginPage from "./LoginPage";
-import OcrImage from "./OcrImage";
-import { View } from "./Themed";
-
-export {
-  Button,
-  OcrImage,
-  LoginPage,
-  Accordion,
-  Card,
-  LinkText,
-  Row,
-  Typography,
-  Title,
-  Input,
-  PopUp,
-  IngredientInput,
-  RadioButton,
-  View,
-};
+export { default as Button } from "./Button";
+export { default as Card } from "./Card";
+export { default as LinkText } from "./LinkText";
+export { default as Row } from "./Row";
+export { Typography } from "./Typography";
+export { Title } from "./Title";
+export { default as Input } from "./Input";
+export { default as PopUp } from "./PopUp";
+export { default as IngredientInput } from "./IngredientInput";
+export { default as RadioButton } from "./RadioButton";
+export { default as Accordion } from "./Accordion";
+export { default as LoginPage } from "./LoginPage";
+export { default as OcrImage } from "./OcrImage";
+export { View } from "./Themed";

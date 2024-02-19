@@ -1,12 +1,17 @@
 import { Text } from "react-native-paper";
 
-export const underlineText = (wordsToUnderline: string[], text: string): React.ReactNode => {
-  return (
+export const underlineText = (
+  wordsToUnderline: string[],
+  text: string
+): { underlinedJsx: React.ReactNode; detectedWords: string[] } => {
+  const detectedWords = [];
+  const underlinedJsx = (
     <Text>
       {text
         .split(/[,:]/i)
         .map((word, index) => {
-          if (wordsToUnderline.includes(word.trim())) {
+          if (word.trim().match(new RegExp(wordsToUnderline.join("|"), "i"))) {
+            detectedWords.push(word);
             return (
               <Text
                 key={index}
@@ -18,7 +23,7 @@ export const underlineText = (wordsToUnderline: string[], text: string): React.R
                   borderRadius: 5,
                 }}
               >
-                {`${word}(allergie!)`}
+                {word}
               </Text>
             );
           } else {
@@ -28,4 +33,5 @@ export const underlineText = (wordsToUnderline: string[], text: string): React.R
         .reduce((prev, curr, index) => (index === 0 ? [curr] : [...prev, ", ", curr]), [])}
     </Text>
   );
+  return { underlinedJsx, detectedWords };
 };
