@@ -9,14 +9,16 @@ import { Title } from "./Title";
 function AllIngredients() {
   const { product, user } = useStore();
   const { allIngredients } = product.current_scannedProduct;
-  const detectWords = [user.current_user.allergies, user.current_user.customAllergies].flat();
+  const userWords = [user.current_user.allergies, user.current_user.customAllergies]
+    .flat()
+    .filter((item) => item != undefined);
   const { underlinedJsx, detectedWords } = underlineText(
-    detectWords ?? [],
+    userWords ?? [],
     allIngredients?.toLowerCase()
   );
   return (
     <>
-      {detectWords.length > 0 && (
+      {detectedWords.length > 0 && (
         <>
           <Title label="Detected words" level="3" />
           <Text variant="bodyMedium" style={{ fontWeight: "bold" }}>

@@ -1,6 +1,6 @@
 import URLS from "../constants/Host";
 
-interface IStatusResponse {
+interface IHaramResponse {
   current_ingredient: string;
   pattern: {
     explanation: string;
@@ -9,11 +9,17 @@ interface IStatusResponse {
     haram?: boolean;
     schoolOfThought?: string[];
   };
+  halal?: boolean;
+}
+interface IHalalResponse {
+  current_ingredient: string;
+  halal: boolean;
+  reason: string;
 }
 // calls the backend to check the status of the ingredients. Expects ingredients seperated by commas
 export const temporaryStatus = async (
   ingredientsSeperatedByCommas: string
-): Promise<IStatusResponse[]> => {
+): Promise<(IHaramResponse | IHalalResponse)[]> => {
   const url = `${URLS.HOST}${URLS.CHECK_STATUS}`;
   const formdata = new FormData();
   formdata.append("data", ingredientsSeperatedByCommas);

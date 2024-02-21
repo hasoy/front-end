@@ -5,6 +5,8 @@ export const underlineText = (
   text: string
 ): { underlinedJsx: React.ReactNode; detectedWords: string[] } => {
   const detectedWords = [];
+  const unchangedJsx = <Text>{text}</Text>;
+  if (wordsToUnderline.length === 0) return { underlinedJsx: unchangedJsx, detectedWords: [] };
   const underlinedJsx = (
     <Text>
       {text

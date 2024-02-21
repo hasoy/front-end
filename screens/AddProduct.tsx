@@ -60,7 +60,10 @@ function AddProduct() {
     }
     const status = await temporaryStatus(ingredients);
     const haramIngredients = status
-      .map((ingredient) => ingredient?.current_ingredient)
+      .map((ingredient) => {
+        if (ingredient?.halal) return;
+        return ingredient?.current_ingredient;
+      })
       .filter((e) => e != undefined);
     const haramLabel = `${
       LABELS.NEW_PRODUCT_ADDED_SUCCESS

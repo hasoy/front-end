@@ -8,7 +8,7 @@ export const haramProduct: IProduct = {
   allIngredients:
     "Ingrediënten: Water, Pinda,pind,pindakaas,pindas,pinda's, suiker, maltodextrine, voedingszuur: citroenzuur, natriumchloride, zuurteregelaars: magnesiumlactaat, natriumcitraat, kaliumfosfaat en calciumfosfaat, conserveermiddel: E202, vitamines: B3, E, B5, B6 en H, stabilisatoren: arabische gom en glycerol-esters van houthars, natuurlijke aroma’s. Osmolaliteit 290-320 mOsm/L",
   weight: "500 Milliliter",
-  vegan: false,
+  vegan: true,
   category: "Frisdrank, sappen, koffie, thee/Sportdrank flesjes",
   allergens: null,
   lifestyle: [

@@ -1,6 +1,6 @@
 const URLS = {
   HOST: "https://coral-app-6m75s.ondigitalocean.app",
-  //for localhost: HOST: "http://[your ip]:1338", to find your ip type ipconfig in terminal
+  //for localhost: // HOST: "http://[your ip]:1338", to find your ip type ipconfig in terminal
   CHECK_STATUS: "/api/check-status",
   REPORTED_PRODUCT: "/api/reported-products",
   INGREDIENTS: "/api/ingredients",

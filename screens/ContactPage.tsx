@@ -33,15 +33,21 @@ function ContactPage() {
     });
   };
 
+  const addNewCustomFilter = () => {
+    if (user.current_user.customAllergies?.includes(customAllergy)) {
+      setErrorMessage(`${customAllergy} bestaat al`);
+      return;
+    }
+    user.setUser({
+      ...user.current_user,
+      customAllergies: [...tempAllergies, customAllergy],
+    });
+    setCustomAllergy("");
+    customAllergyRef.current.focus();
+  };
+
   return (
     <Card padding scroll={false}>
-      <Text variant="headlineMedium">{LABELS.FAQ}</Text>
-      {FAQ.map((item) => (
-        <Accordion title={item.title} key={item.title}>
-          <Text>{item.desc}</Text>
-        </Accordion>
-      ))}
-
       <Text variant="headlineMedium">{LABELS.ALLERGIEEN}</Text>
       <View style={styles.chips}>
         {allergiesList.map((item) => (
@@ -68,23 +74,10 @@ function ContactPage() {
         value={customAllergy}
         ref={customAllergyRef}
         error={!!errorMessage}
+        onSubmitEditing={addNewCustomFilter}
         onChangeText={(text) => {
           setCustomAllergy(text);
           setErrorMessage("");
-        }}
-        onKeyPress={(e) => {
-          if (e.nativeEvent.key === "Enter") {
-            if (user.current_user.customAllergies?.includes(customAllergy)) {
-              setErrorMessage(`${customAllergy} bestaat al`);
-              return;
-            }
-            user.setUser({
-              ...user.current_user,
-              customAllergies: [...tempAllergies, customAllergy],
-            });
-            setCustomAllergy("");
-            customAllergyRef.current.focus();
-          }
         }}
       ></TextInput>
       {errorMessage && <HelperText type={"error"}>{errorMessage}</HelperText>}
@@ -100,6 +93,12 @@ function ContactPage() {
           </Chip>
         ))}
       </View>
+      <Text variant="headlineMedium">{LABELS.FAQ}</Text>
+      {FAQ.map((item) => (
+        <Accordion title={item.title} key={item.title}>
+          <Text>{item.desc}</Text>
+        </Accordion>
+      ))}
     </Card>
   );
 }

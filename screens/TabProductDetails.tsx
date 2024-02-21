@@ -45,14 +45,19 @@ function TabProductDetails() {
       <Card padding>
         <Title label={product.current_scannedProduct?.productName} />
         <Row>
-          <Typography weight="500" label={`${LABELS.SCHOOL_OF_THOUGHT}: `}></Typography>
+          <Typography
+            weight="500"
+            label={`${LABELS.SCHOOL_OF_THOUGHT}: `}
+          ></Typography>
           <Picker
             selectedValue={user.current_user?.schoolOfThought}
             style={styles.picker}
             onValueChange={(itemValue: ISchoolOfThought) =>
               user.setUser({ ...user.current_user, schoolOfThought: itemValue })
             }
-            dropdownIconColor={colorScheme === "dark" ? COLORS.LIGHT_BACKGROUND : COLORS.BLACK}
+            dropdownIconColor={
+              colorScheme === "dark" ? COLORS.LIGHT_BACKGROUND : COLORS.BLACK
+            }
           >
             {schoolOfThoughtOptions.map((option) => (
               <Picker.Item
@@ -97,7 +102,11 @@ function TabProductDetails() {
             navigation.navigate(PATHS.SCANNER as never);
           }}
         />
-        <Button type="secondary" label={LABELS.PRODUCT_FOUT_MELDEN} onPress={reportProduct} />
+        <Button
+          type="secondary"
+          label={LABELS.PRODUCT_FOUT_MELDEN}
+          onPress={reportProduct}
+        />
       </View>
     </SafeAreaView>
   );
