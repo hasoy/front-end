@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { Accordion, Card } from "../components";
-import { allergiesList } from "../constants/allergies";
 import { StyleSheet } from "react-native";
 import { LABELS } from "../constants/Labels";
 import { Chip, HelperText, Text, TextInput } from "react-native-paper";
@@ -18,10 +17,9 @@ function ContactPage() {
   let tempAllergies = user.custom_allergies;
   const FAQ = [
     { title: LABELS.CONTACT.WIE_ZIJN_WIJ.TITLE, desc: LABELS.CONTACT.WIE_ZIJN_WIJ.DESC },
-    { title: LABELS.CONTACT.MADHAHIB.TITLE, desc: LABELS.CONTACT.MADHAHIB.TOELICHTING },
-    { title: LABELS.CONTACT.DEV.TITLE, desc: LABELS.CONTACT.DEV.DESC },
+    { title: LABELS.CONTACT.MISSIE_EN_VISIE.TITLE, desc: LABELS.CONTACT.MISSIE_EN_VISIE.DESC },
+    { title: LABELS.CONTACT.MADHAHIB.TITLE, desc: LABELS.CONTACT.MADHAHIB.DESC },
     { title: LABELS.CONTACT.CONTACT.TITLE, desc: LABELS.CONTACT.CONTACT.DESC },
-    { title: LABELS.CONTACT.HELP.TITLE, desc: LABELS.CONTACT.HELP.DESC },
   ];
   if (!allergies) allergies = [];
   if (!user.custom_allergies) tempAllergies = [];
@@ -34,6 +32,7 @@ function ContactPage() {
   };
 
   const addNewCustomFilter = () => {
+    if (!customAllergy) return;
     if (user.current_user.customAllergies?.includes(customAllergy)) {
       setErrorMessage(`${customAllergy} bestaat al`);
       return;
@@ -48,8 +47,8 @@ function ContactPage() {
 
   return (
     <Card padding scroll={false}>
-      <Text variant="headlineMedium">{LABELS.ALLERGIEEN}</Text>
-      <View style={styles.chips}>
+      <Text variant="headlineMedium">{LABELS.DETECTEER_WOORDEN}</Text>
+      {/* <View style={styles.chips}>
         {allergiesList.map((item) => (
           <Chip
             selected={allergies?.includes(item)}
@@ -67,9 +66,9 @@ function ContactPage() {
             {item}
           </Chip>
         ))}
-      </View>
+      </View> */}
       <TextInput
-        label={LABELS.DETECTEER_WOORDEN}
+        label={LABELS.VOEG_EEN_WOORD_TOE}
         mode="outlined"
         value={customAllergy}
         ref={customAllergyRef}
@@ -83,12 +82,7 @@ function ContactPage() {
       {errorMessage && <HelperText type={"error"}>{errorMessage}</HelperText>}
       <View style={styles.chips}>
         {tempAllergies.map((item) => (
-          <Chip
-            key={item}
-            selected={allergies?.includes(item)}
-            style={styles.selected}
-            onClose={() => removeCustomFilter(item)}
-          >
+          <Chip key={item} style={styles.selected} onClose={() => removeCustomFilter(item)}>
             {item}
           </Chip>
         ))}
@@ -109,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   selected: {
-    backgroundColor: COLORS.GREEN,
+    backgroundColor: COLORS.GREEN_2,
   },
   chips: {
     gap: 5,

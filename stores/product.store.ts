@@ -68,7 +68,7 @@ export class ProductStore {
   }
 
   get doubtful_ingredients_list() {
-    return this.filtered_ingredients?.filter((ingredient) => ingredient.haram === null || false);
+    return this.filtered_ingredients?.filter((ingredient) => !ingredient.haram);
   }
 
   get has_alcohol() {

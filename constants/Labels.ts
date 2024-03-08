@@ -1,22 +1,31 @@
 export const LABELS = {
   EEN_INGREDIENT_PER_REGEL: "Één ingredient per regel",
   CONTACT: {
-    WIE_ZIJN_WIJ: { TITLE: "Wie zijn wij?", DESC: "Wie zijn wij" },
-    MADHAHIB: { TOELICHTING: "Toelichting", TITLE: "Bepalingen van de wetscholen" },
-    DEV: { TITLE: "Dev title", DESC: "dev desc" },
-    CONTACT: { TITLE: "Contact", DESC: "Contact ons door een email te sturen naar:" },
-    HELP: {
-      TITLE: "Help",
-      DESC: "Help ons om de app te verbeteren door een email te sturen naar:",
+    WIE_ZIJN_WIJ: {
+      TITLE: "Wie zijn wij?",
+      DESC: "Deze app is gebouwd door een kleine groep broeders met een frustratie voor het constant moeten lezen en zoeken welke ingredienten er in een product zitten. Vrijwel alle apps op de markt zijn onbetrouwbare of hebben incomplete data en wij besloten dus dit probleem op te lossen.",
+    },
+    MISSIE_EN_VISIE: {
+      TITLE: "Missie en visie",
+      DESC: "Onze missie is de moslim gemeenschap te voorzien van een betrouwbare bron van informatie over de halal status van producten op een makkelijke, snelle en toegankelijk manier. \n\nWij zijn voorstanders van transparantie en vrijheid. We willen laten zien hoe we de status van ingredienten bepalen en de gebruiker vrijheid bieden in de mening van de wetschool te volgen die hij of zij wilt.",
+    },
+    MADHAHIB: {
+      DESC: "Wij hebben een halal framework opgesteld die rekening houdt met de verschillende wetscholen. \n\nDit framework is een verzameling van de meest populaire standpunten binnen de wetscholen over specifieke ingredienten. \n\nWe zijn van plan dit framework in de nabije toekomst uit te brengen in het kader van transparantie. We zijn nog in het proces om dit framework door meerdere geleerden te laten verifiëren.",
+      TITLE: "Wetscholen en halal framework",
+    },
+    CONTACT: {
+      TITLE: "Contact",
+      DESC: "Heb je vragen of feedback? \n\nStuur ons een bericht op X: \n@sheikhhalalnl \n\nOf mail naar: \nsheikhhalalr@gmail.com",
     },
   },
   WIE_ZIJN_WIJ: "Wie zijn wij?",
   ALLERGIEEN: "Allergieën",
-  ALLE_INGREDIENTEN: "Alle ingrediënen",
+  ALLE_INGREDIENTEN: "Alle ingrediënten",
   BARCODE: "Barcode",
   EMAIL: "E-mail",
   FAQ: "FAQ",
   DETECTEER_WOORDEN: "Detecteer woorden",
+  VOEG_EEN_WOORD_TOE: "Voeg een woord toe",
   FOUT_MISSENDE_INFO: "Fout of missende informatie",
   GEEN_BARCODE_GEVONDEN: "Geen barcode gevonden",
   GEEN_TOESTEMMING_CAMERA: "Geen toestemming voor camera ontvangen",
@@ -63,7 +72,7 @@ export const LABELS = {
   HARAM_DOOR_ONBEKENDE_OORSPRONG: "Haram door onbekende oorsprong",
   USERNAME: "Gebruikersnaam",
   VERZENDEN: "Verzenden",
-  VOEG_INGREDIENTEN_TOE: "Voeg ingrediënten handmatig toe",
+  VOEG_INGREDIENTEN_TOE: "Voeg ingrediënten toe",
   VUL_UW_TOELICHTING_TOE: "Vul uw toelichting toe",
   PASSWORD: "Wachtwoord",
   LOG_IN: "Inloggen",

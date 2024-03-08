@@ -8,13 +8,12 @@ import { useState } from "react";
 import URLS from "../constants/Host";
 import PopUp from "../components/PopUp";
 import IngredientInput from "../components/IngredientInput";
-import OcrImage from "../components/OcrImage";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-paper";
 import { temporaryStatus } from "../helpers/checkStatus";
 
 function AddProduct() {
-  const { product, user } = useStore();
+  const { product } = useStore();
   const [productName, setProductName] = useState("");
   const [popupLabel, setPopupLabel] = useState("");
   const [ingredients, setIngredients] = useState<string>("");
@@ -77,7 +76,7 @@ function AddProduct() {
   };
 
   return (
-    <Card padding scroll={false}>
+    <Card padding style={{ display: "flex", flex: 1 }}>
       <Title label={LABELS.BARCODE} level="1" />
       <Title label={product.current_barcode ?? LABELS.GEEN_BARCODE_GEVONDEN} level="2" />
       <Card>
@@ -93,7 +92,6 @@ function AddProduct() {
           value={ingredients}
           placeholder={LABELS.EEN_INGREDIENT_PER_REGEL}
         />
-        <OcrImage setValue={setIngredients} />
       </Card>
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}

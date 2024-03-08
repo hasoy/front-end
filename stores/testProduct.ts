@@ -2,13 +2,13 @@ import { IProduct } from "../../front-end/types/schemas.types";
 
 export const haramProduct: IProduct = {
   barcode: "08722200962842",
-  productName: "Coca cola",
+  productName: "Test product",
   land: "Netherlands",
   store: "Albert Heijn",
   allIngredients:
-    "Ingrediënten: Water, Pinda,pind,pindakaas,pindas,pinda's, suiker, maltodextrine, voedingszuur: citroenzuur, natriumchloride, zuurteregelaars: magnesiumlactaat, natriumcitraat, kaliumfosfaat en calciumfosfaat, conserveermiddel: E202, vitamines: B3, E, B5, B6 en H, stabilisatoren: arabische gom en glycerol-esters van houthars, natuurlijke aroma’s. Osmolaliteit 290-320 mOsm/L",
+    "Ingrediënten: water, pinda, alcohol, suiker, maltodextrine, voedingszuur: citroenzuur, natriumchloride, zuurteregelaars: magnesiumlactaat, natriumcitraat, kaliumfosfaat en calciumfosfaat, conserveermiddel: E202, vitamines: B3, E, B5, B6 en H, stabilisatoren: arabische gom en glycerol-esters van houthars, natuurlijke aroma’s. Osmolaliteit 290-320 mOsm/L",
   weight: "500 Milliliter",
-  vegan: true,
+  vegan: false,
   category: "Frisdrank, sappen, koffie, thee/Sportdrank flesjes",
   allergens: null,
   lifestyle: [
@@ -41,17 +41,17 @@ export const haramProduct: IProduct = {
       {
         id: 1234,
         attributes: {
-          title: "wijntjuuh2",
+          title: "gelatine",
           ingredient_state: {
             data: {
               id: 551,
               attributes: {
-                title: "alcohol",
+                title: "gelatine",
                 consensus: true,
                 istihlaak: false,
                 istihala: false,
                 haram: true,
-                explanation: "Alcohol",
+                explanation: "Gelatine",
                 schoolOfThought: [],
               },
             },
@@ -61,7 +61,7 @@ export const haramProduct: IProduct = {
       {
         id: 1234,
         attributes: {
-          title: "wijntjuuh",
+          title: "Alcohol",
           ingredient_state: {
             data: {
               id: 551,
@@ -81,18 +81,18 @@ export const haramProduct: IProduct = {
       {
         id: 12252,
         attributes: {
-          title: "E422 ingredientac",
+          title: "E422",
           ingredient_state: {
             data: {
               id: 884,
               attributes: {
                 title: "E422",
-                consensus: false,
+                consensus: true,
                 istihlaak: false,
                 istihala: true,
-                haram: null,
+                haram: false,
                 explanation:
-                  "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oli�n en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oli�n, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetari�rs en sommige religies.",
+                  "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oliën en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oliën, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetariërs en sommige religies.",
                 schoolOfThought: ["shafi", "hanbali"],
               },
             },
@@ -155,7 +155,7 @@ export const doubtfulProduct: IProduct = {
                 istihala: true,
                 haram: null,
                 explanation:
-                  "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oli�n en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oli�n, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetari�rs en sommige religies.",
+                  "Bevochtigingsmiddel en verdikkingsmiddel. Komt van nature voor als bestanddeel van dierlijke en plantaardige vetten en oliën en komt ook in ons lichaam voor. Het wordt gewonnen uit vetten en oliën, kunstmatig gemaakt door stoffen te bewerken of met behulp van een bacterie uit suikers. Het wordt gebruikt om producten te beschermen tegen uitdrogen of steviger te maken. Het kan ook gebruikt worden in biologische plantenextracten. Het kan gemaakt zijn door bewerking van dierlijke vetten. Hierdoor is het in sommige gevallen niet geschikt voor veganisten, vegetariërs en sommige religies.",
                 schoolOfThought: ["shafi", "hanbali"],
               },
             },

@@ -20,7 +20,7 @@ function AllIngredients() {
     <>
       {detectedWords.length > 0 && (
         <>
-          <Title label="Detected words" level="3" />
+          <Title label="Gedetecteerde woorden" level="3" />
           <Text variant="bodyMedium" style={{ fontWeight: "bold" }}>
             {detectedWords.join(", ").trim()}
           </Text>

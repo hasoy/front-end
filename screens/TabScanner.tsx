@@ -13,6 +13,7 @@ import SelectMadhab from "./SelectMadhab";
 import { useFetch } from "../hooks/useFetch";
 import { PATHS } from "../constants/paths";
 import BarcodeNotFound from "../components/BarcodeNotFound";
+import { Camera } from "expo-camera";
 
 function TabScanner() {
   const { product, user } = useStore();
@@ -20,21 +21,18 @@ function TabScanner() {
   const isFocused = useIsFocused();
   const { Fetch } = useFetch();
 
-  const [hasPermission, setHasPermission] = useState<Boolean>();
   const [scanning, setScanning] = useState(false);
   const navigation = useNavigation();
+  const [permission, requestPermission] = Camera.useCameraPermissions();
 
   // get permission for camera
-  const getBarCodeScannerPermissions = async () => {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
-    setHasPermission(status === "granted");
-  };
+
   useEffect(() => {
-    getBarCodeScannerPermissions();
     user.checkLoggedIn();
   }, []);
 
   const handleBarCodeScanned = async ({ data }) => {
+    console.log("scanned barcode", data);
     product.setBarcode(data);
     await fetchBarcode(data?.toString());
     product.setScanned(true);
@@ -76,14 +74,11 @@ function TabScanner() {
   ) {
     return <SelectMadhab />;
   }
-  if (hasPermission === false) {
+  if (permission?.granted === false) {
     return (
       <Card padding>
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
-        <Button
-          label={LABELS.TOESTEMMING_CAMERA_AANVRAAG}
-          onPress={() => getBarCodeScannerPermissions()}
-        />
+        <Button label={LABELS.TOESTEMMING_CAMERA_AANVRAAG} onPress={() => requestPermission()} />
       </Card>
     );
   }
@@ -101,15 +96,17 @@ function TabScanner() {
           />
           <Title label={LABELS.SCAN_BARCODE} level="3" />
           {isFocused && (
-            <BarCodeScanner
+            <Camera
+              barCodeScannerSettings={{
+                barCodeTypes: [
+                  BarCodeScanner.Constants.BarCodeType.ean13,
+                  BarCodeScanner.Constants.BarCodeType.upc_a,
+                  BarCodeScanner.Constants.BarCodeType.ean8,
+                  BarCodeScanner.Constants.BarCodeType.code128,
+                ],
+              }}
               onBarCodeScanned={handleBarCodeScanned}
               style={styles.barcodescanner}
-              barCodeTypes={[
-                BarCodeScanner.Constants.BarCodeType.ean13,
-                BarCodeScanner.Constants.BarCodeType.upc_a,
-                BarCodeScanner.Constants.BarCodeType.ean8,
-                BarCodeScanner.Constants.BarCodeType.code128,
-              ]}
             />
           )}
         </Card>
@@ -129,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   barcodescanner: {
-    width: "100%",
+    width: "75%",
     height: "50%",
   },
   barcodeContainer: {

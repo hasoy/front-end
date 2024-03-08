@@ -11,7 +11,6 @@ import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
@@ -53,7 +52,7 @@ function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<any>();
 
 // uncomment for auth/logging in(missing forgot/reset password)
 // function AuthStack() {
@@ -117,7 +116,7 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+const BottomTab = createBottomTabNavigator<any>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
