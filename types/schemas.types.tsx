@@ -42,7 +42,7 @@ export type IProduct = {
   land?: string;
   store?: string;
   allIngredients?: string;
-  // fix reportedProducts
+  // TODO fix reportedProducts
   // reportedProducts?:IReportedProduct[]
   weight?: string;
   barcode: string;

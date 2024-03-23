@@ -1,5 +1,7 @@
 export const LABELS = {
-  EEN_INGREDIENT_PER_REGEL: "Één ingredient per regel",
+  SEARCH_PRODUCT: "Search product",
+  NO_SEARCH_RESULTS: "Geen resultaten",
+  VOER_INGREDIENTEN_IN: "Zet een komma tussen ingrediënten",
   CONTACT: {
     WIE_ZIJN_WIJ: {
       TITLE: "Wie zijn wij?",
@@ -17,6 +19,10 @@ export const LABELS = {
       TITLE: "Contact",
       DESC: "Heb je vragen of feedback? \n\nStuur ons een bericht op X: \n@sheikhhalalnl \n\nOf mail naar: \nsheikhhalalr@gmail.com",
     },
+    SUPPORTED_STORES: {
+      TITLE: "Supermarkten",
+      DESC: "De huidige supermarkten die wij ondersteunen zijn: Albert Heijn, Dirk, Jumbo, Dekamarkt, Coop en Spar",
+    },
   },
   WIE_ZIJN_WIJ: "Wie zijn wij?",
   ALLERGIEEN: "Allergieën",
@@ -24,6 +30,7 @@ export const LABELS = {
   BARCODE: "Barcode",
   EMAIL: "E-mail",
   FAQ: "FAQ",
+  OK: "Ok",
   DETECTEER_WOORDEN: "Detecteer woorden",
   VOEG_EEN_WOORD_TOE: "Voeg een woord toe",
   FOUT_MISSENDE_INFO: "Fout of missende informatie",
@@ -54,7 +61,8 @@ export const LABELS = {
   PRODUCT_FOUT_MELDEN: "Product fout melden",
   PRODUCT_MET_BARCODE: "Product met barcode",
   PRODUCT_NAAM: "Product naam",
-  PRODUCT_REPORT_SENT_DESC: "JazakAllahu khairan. Uw melding wordt spoedig bekeken in sha Allah",
+  PRODUCT_REPORT_SENT_DESC:
+    "JazakAllahu khairan. Uw melding wordt spoedig bekeken in sha Allah",
   PRODUCT_REPORT_SENT: "Product melding verstuurd",
   PRODUCT_TOEVOEGEN: "Product toevoegen",
   PRODUCT_TWIJFELACHTIG: "Dit product is twijfelachtig",
@@ -67,6 +75,7 @@ export const LABELS = {
   AKKOORD: "Akkoord",
   PRODUCT_BESTAAT_AL: "Nieuw product is al toegevoegd met deze barcode",
   TERUG: "Terug",
+  ANNULEREN: "Annuleren",
   TOELICHTING: "Toelichting",
   TOESTEMMING_CAMERA_AANVRAAG: "Aanvraag voor toestemming gebruik van camera",
   HARAM_DOOR_ONBEKENDE_OORSPRONG: "Haram door onbekende oorsprong",

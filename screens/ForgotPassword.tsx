@@ -28,7 +28,6 @@ function ForgotPassword() {
       method: "POST",
       body: obj,
     });
-    console.log(data);
     if (data.error) {
       setRegisterError(data.error.message || data.error.details.message);
     }
@@ -46,7 +45,11 @@ function ForgotPassword() {
         onPress={handleForgotPassword}
         disabled={!email}
       ></Button>
-      <Button label={LABELS.TERUG} type="secondary" onPress={() => navigation.goBack()}></Button>
+      <Button
+        label={LABELS.TERUG}
+        type="secondary"
+        onPress={() => navigation.goBack()}
+      ></Button>
       {registerError && (
         <PopUp
           title={registerError}

@@ -23,6 +23,7 @@ interface IModal {
   message?: string;
   buttonLabel?: string;
   onButtonPress?: () => void;
+  cancelButton?: boolean;
 }
 
 export default function PopUp({
@@ -36,6 +37,7 @@ export default function PopUp({
   subTitle,
   buttonLabel,
   onButtonPress,
+  cancelButton = true,
 }: IModal) {
   const [modalVisible, setModalVisible] = useState(visible);
   const colorScheme = useColorScheme();
@@ -76,11 +78,13 @@ export default function PopUp({
                 onPress={handleButton}
               />
             )}
-            <Button
-              type={onButtonPress ? "secondary" : "primary"}
-              label={LABELS.TERUG}
-              onPress={toggleModal}
-            />
+            {cancelButton && (
+              <Button
+                type={onButtonPress ? "secondary" : "primary"}
+                label={LABELS.ANNULEREN}
+                onPress={toggleModal}
+              />
+            )}
           </>
         </View>
       </View>

@@ -1,18 +1,24 @@
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useEffect } from "react";
 import {
-  PaperProvider,
-  MD3LightTheme as LightTheme,
   MD3DarkTheme as DarkTheme,
+  MD3LightTheme as LightTheme,
+  PaperProvider,
 } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { COLORS } from "./constants/Colors";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
+import { useStore } from "./hooks/useStore";
 import Navigation from "./navigation";
-import { COLORS } from "./constants/Colors";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+  const { user } = useStore();
+  useEffect(() => {
+    user.checkLoggedIn();
+  }, []);
   const lightTheme = {
     ...LightTheme,
     colors: {

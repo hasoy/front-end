@@ -2,7 +2,12 @@ import { action, makeAutoObservable } from "mobx";
 import { Store } from "./index.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export type ISchoolOfThought = "maliki" | "shafi" | "hanafi" | "hanbali" | "default";
+export type ISchoolOfThought =
+  | "maliki"
+  | "shafi"
+  | "hanafi"
+  | "hanbali"
+  | "default";
 
 interface IUser {
   // email: string;
@@ -11,8 +16,8 @@ interface IUser {
   schoolOfThought?: ISchoolOfThought;
   // id: number;
   // jwt?: string;
-  allergies?: string[];
-  customAllergies?: string[];
+  // allergies?: string[];
+  // customAllergies?: string[];
 }
 
 export class UserStore {
@@ -23,7 +28,8 @@ export class UserStore {
 
   constructor(rootStore: Store) {
     this.store = rootStore;
-    this.user = { allergies: [], customAllergies: [] };
+    // this.user = { allergies: [], customAllergies: [] };
+    this.user = { schoolOfThought: null };
     makeAutoObservable(this);
   }
 
@@ -31,9 +37,9 @@ export class UserStore {
     return JSON.parse(JSON.stringify({ ...this.user }));
   }
 
-  get custom_allergies() {
-    return this.user.customAllergies;
-  }
+  // get custom_allergies() {
+  //   return this.user.customAllergies;
+  // }
 
   setUser = action(async (value: IUser) => {
     this.set("user", value);

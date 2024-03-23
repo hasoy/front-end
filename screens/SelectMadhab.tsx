@@ -11,7 +11,9 @@ function SelectMadhab() {
   useEffect(() => {
     user.checkLoggedIn();
   }, []);
-  const [madhab, setMadhab] = useState<ISchoolOfThought>(user.current_user.schoolOfThought ?? null);
+  const [madhab, setMadhab] = useState<ISchoolOfThought>(
+    user.current_user.schoolOfThought ?? null,
+  );
   const options = [
     { label: LABELS.HANAFI, value: KEYS.MADHABS.HANAFI },
     { label: LABELS.SHAFI, value: KEYS.MADHABS.SHAFI },
@@ -28,10 +30,17 @@ function SelectMadhab() {
   };
 
   return (
-    <Card padding>
+    <Card padding scroll={false}>
       <Title label={LABELS.CHOOSE_SCHOOL_OF_THOUGHT} />
-      <RadioButton data={options} onSelect={(value) => setMadhab(value as ISchoolOfThought)} />
-      <Button label={LABELS.SAVE} disabled={!madhab} onPress={saveMadhab}></Button>
+      <RadioButton
+        data={options}
+        onSelect={(value) => setMadhab(value as ISchoolOfThought)}
+      />
+      <Button
+        label={LABELS.SAVE}
+        disabled={!madhab}
+        onPress={saveMadhab}
+      ></Button>
     </Card>
   );
 }

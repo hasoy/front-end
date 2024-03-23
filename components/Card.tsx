@@ -1,4 +1,10 @@
-import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import {
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import { COLORS } from "../constants/Colors";
 import { useThemeColor } from "./Themed";
 
@@ -19,7 +25,7 @@ export default function Card({
 }: ICard) {
   const backgroundColor = useThemeColor(
     { light: COLORS.LIGHT_BACKGROUND, dark: COLORS.BLACK },
-    "background"
+    "background",
   );
   const view = (
     <View
@@ -35,7 +41,11 @@ export default function Card({
     </View>
   );
 
-  const component = scroll ? <ScrollView style={styles.container}>{view}</ScrollView> : <>{view}</>;
+  const component = scroll ? (
+    <ScrollView contentContainerStyle={styles.container}>{view}</ScrollView>
+  ) : (
+    <>{view}</>
+  );
   return <>{component}</>;
 }
 
@@ -47,7 +57,7 @@ const styles = StyleSheet.create({
   },
   padding: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingBottom: 16,
   },
   row: {
     flexDirection: "row",

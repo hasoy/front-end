@@ -1,19 +1,17 @@
-import { KeyboardAvoidingView, Platform, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet } from "react-native";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
-import { Button, Title, Typography, RadioButton, Card, PopUp } from "../components";
+import { Button, Title, RadioButton, Card, PopUp } from "../components";
 import { LABELS } from "../constants/Labels";
 import { useState } from "react";
 import { IReportReason } from "../types/schemas.types";
 import URLS from "../constants/Host";
 import { useNavigation } from "@react-navigation/native";
 import { useFetch } from "../hooks/useFetch";
-import { Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
-import { PATHS } from "../constants/paths";
 
 function ReportProduct() {
-  const { product, user } = useStore();
+  const { product } = useStore();
   const { Fetch } = useFetch();
   const [reason, setReason] = useState<IReportReason | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -56,47 +54,44 @@ function ReportProduct() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-      keyboardVerticalOffset={20}
-    >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <Card padding>
-          <Title label={product.current_scannedProduct?.productName ?? ""} level="1" />
-          {product.current_scannedProduct?.barcode && (
-            <Typography label={`${LABELS.BARCODE}: ${product.current_scannedProduct.barcode}`} />
-          )}
-          <Title label={LABELS.KIES_REDEN} level="2" />
-          <RadioButton data={options} onSelect={(value) => setReason(value as IReportReason)} />
-          <TextInput
-            onChangeText={(text) => setExplanation(text)}
-            value={explanation}
-            label={LABELS.TOELICHTING}
-            placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
-            style={styles.stretch}
-            multiline
-            mode="outlined"
-          />
-          <Button
-            label={LABELS.VERZENDEN}
-            onPress={() => sendReport()}
-            style={styles.bottom}
-            disabled={!reason}
-          />
-          {showModal && (
-            <PopUp
-              title={LABELS.PRODUCT_REPORT_SENT}
-              message={LABELS.PRODUCT_REPORT_SENT_DESC}
-              visible={showModal}
-              onDismiss={() => navigation.goBack()}
-              onButtonPress={() => navigation.navigate(PATHS.SCANNER as never)}
-              buttonLabel={LABELS.OPNIEUW_SCANNEN}
-            />
-          )}
-        </Card>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+    <Card padding scroll>
+      {product.current_scannedProduct?.productName && (
+        <Title
+          label={product.current_scannedProduct?.productName ?? ""}
+          level="2"
+        />
+      )}
+      <Title label={LABELS.KIES_REDEN} level="3" />
+      <RadioButton
+        data={options}
+        onSelect={(value) => setReason(value as IReportReason)}
+      />
+      <TextInput
+        onChangeText={(text) => setExplanation(text)}
+        value={explanation}
+        label={LABELS.TOELICHTING}
+        placeholder={LABELS.VUL_UW_TOELICHTING_TOE}
+        multiline
+        mode="outlined"
+      />
+      <Button
+        label={LABELS.VERZENDEN}
+        onPress={() => sendReport()}
+        style={styles.bottom}
+        disabled={!reason || !product.current_scannedProduct?.barcode}
+      />
+      {showModal && (
+        <PopUp
+          title={LABELS.PRODUCT_REPORT_SENT}
+          message={LABELS.PRODUCT_REPORT_SENT_DESC}
+          visible={showModal}
+          onDismiss={() => navigation.goBack()}
+          onButtonPress={() => navigation.goBack()}
+          buttonLabel={LABELS.OK}
+          cancelButton={false}
+        />
+      )}
+    </Card>
   );
 }
 
@@ -106,11 +101,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-  },
-  stretch: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "flex-start",
   },
 });
 

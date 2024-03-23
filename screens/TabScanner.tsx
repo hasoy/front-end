@@ -1,15 +1,13 @@
 import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { useNavigation } from "@react-navigation/native";
 import { Typography, Card, Title, Button } from "../components";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { LABELS } from "../constants/Labels";
 import { Image } from "expo-image";
 import URLS from "../constants/Host";
-import { useIsFocused } from "@react-navigation/native";
-import SelectMadhab from "./SelectMadhab";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useFetch } from "../hooks/useFetch";
 import { PATHS } from "../constants/paths";
 import BarcodeNotFound from "../components/BarcodeNotFound";
@@ -25,14 +23,12 @@ function TabScanner() {
   const navigation = useNavigation();
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  // get permission for camera
-
   useEffect(() => {
     user.checkLoggedIn();
   }, []);
 
   const handleBarCodeScanned = async ({ data }) => {
-    console.log("scanned barcode", data);
+    if (scanning) return;
     product.setBarcode(data);
     await fetchBarcode(data?.toString());
     product.setScanned(true);
@@ -51,12 +47,14 @@ function TabScanner() {
   async function fetchBarcode(barcode: string) {
     if (barcode.startsWith("0")) barcode = barcode.slice(1);
     const barcodeQueryUrl = `${host}/api/products?filters[barcode][$contains]=${barcode}&${URLS.POPULATE_INGREDIENTS}`;
-    if (scanning) return;
     try {
       setScanning(true);
       const response = await Fetch({ url: barcodeQueryUrl });
       if (response.data[0]?.attributes) {
-        product.setScannedProduct({ ...response.data[0]?.attributes, id: response.data[0]?.id });
+        product.setScannedProduct({
+          ...response.data[0]?.attributes,
+          id: response.data[0]?.id,
+        });
         postScannedProduct(response.data[0]?.id);
         navigation.navigate(PATHS.PRODUCT_DETAILS as never);
       } else product.setScannedProduct(null);
@@ -68,17 +66,14 @@ function TabScanner() {
     }
   }
 
-  if (
-    // user.current_user !== null &&
-    !user.current_user?.schoolOfThought
-  ) {
-    return <SelectMadhab />;
-  }
   if (permission?.granted === false) {
     return (
       <Card padding>
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
-        <Button label={LABELS.TOESTEMMING_CAMERA_AANVRAAG} onPress={() => requestPermission()} />
+        <Button
+          label={LABELS.TOESTEMMING_CAMERA_AANVRAAG}
+          onPress={() => requestPermission()}
+        />
       </Card>
     );
   }

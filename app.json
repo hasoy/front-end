@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "front-end",
+    "name": "Sheikh Halal",
     "slug": "front-end",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
-    "icon": "./assets/images/logo.png",
+    "icon": "./assets/images/app-icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash1.png",
@@ -14,24 +14,32 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hasoy.frontend"
+      "bundleIdentifier": "com.hasoy.frontend",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
-    "scheme": "front-end",
+    "scheme": "sheikh-halal",
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logo.png",
+        "foregroundImage": "./assets/images/app-icon.png",
         "backgroundColor": "#F7FAFB"
       },
-      "package": "com.hasoy.frontend"
+      "package": "com.hasoy.frontend",
+      "runtimeVersion": "1.0.5",
+      "versionCode": 6
     },
     "web": {
-      "favicon": "./assets/images/logo.png",
+      "favicon": "./assets/images/app-icon.png",
       "bundler": "metro"
     },
     "extra": {
       "eas": {
         "projectId": "a383c002-65ae-47c1-bc07-846a878a5048"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a383c002-65ae-47c1-bc07-846a878a5048"
     }
   }
 }

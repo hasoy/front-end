@@ -5,7 +5,11 @@
  */
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
@@ -17,19 +21,15 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import {
   AddProduct,
-  LoginView,
   ModalScreen,
   NotFoundScreen,
-  RegisterView,
   ReportProduct,
   TabProductDetails,
-  TabProfile,
   TabScanner,
-  ResetPassword,
-  ForgotPassword,
 } from "../screens";
 import { PATHS } from "../constants/paths";
 import ContactPage from "../screens/ContactPage";
+import { HomeScreen } from "../screens/HomeScreen";
 
 function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   const { user } = useStore();
@@ -81,19 +81,21 @@ const Stack = createNativeStackNavigator<any>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
       <Stack.Screen
-        name={PATHS.PRODUCT_DETAILS}
-        options={{ title: "Product details" }}
-        component={TabProductDetails}
+        name="Root"
+        component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: "Oops!" }}
       />
       <Stack.Screen
         name={PATHS.SCANNER}
         options={{ title: "Barcode scanner" }}
         component={TabScanner}
       />
-      {/* <Stack.Screen name={PATHS.PROFILE} options={{ title: "Profiel" }} component={TabProfile} /> */}
       <Stack.Screen
         name={PATHS.REPORT_PRODUCT}
         options={{ title: "Product fout melden" }}
@@ -104,7 +106,16 @@ function RootNavigator() {
         options={{ title: "Product toevoegen" }}
         component={AddProduct}
       />
-      <Stack.Screen name={PATHS.CONTACT} options={{ title: "Contact" }} component={ContactPage} />
+      <Stack.Screen
+        name={PATHS.PRODUCT_DETAILS}
+        options={{ title: "Product details" }}
+        component={TabProductDetails}
+      />
+      <Stack.Screen
+        name={PATHS.CONTACT}
+        options={{ title: "Contact" }}
+        component={ContactPage}
+      />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -123,7 +134,7 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabScanner"
+      initialRouteName="home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
@@ -132,38 +143,33 @@ function BottomTabNavigator() {
         name={PATHS.SCANNER}
         component={TabScanner}
         options={{
-          title: "Barcode scanner",
+          title: "",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="barcode" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="barcode" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
-        name={PATHS.PRODUCT_DETAILS}
-        component={TabProductDetails}
+        name={PATHS.HOME}
+        component={HomeScreen}
         options={{
-          title: "Product details",
+          title: "",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="sitemap" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <BottomTab.Screen
         name={PATHS.CONTACT}
         component={ContactPage}
         options={{
-          title: "Contact",
+          title: "",
           tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="info-circle" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="info-circle" color={color} />
+          ),
         }}
       />
-      {/* <BottomTab.Screen
-        name="TabProfile"
-        component={TabProfile}
-        options={{
-          title: "Profiel",
-          tabBarShowLabel: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
-        }}
-      /> */}
     </BottomTab.Navigator>
   );
 }

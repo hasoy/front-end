@@ -1,4 +1,5 @@
 export const PATHS = {
+  HOME: "home",
   LOGIN: "inloggen",
   REGISTER: "registeren",
   FORGOT_PASSWORD: "wachtwoord-vergeten",

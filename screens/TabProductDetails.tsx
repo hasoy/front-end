@@ -1,5 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { StyleSheet, View, SafeAreaView, useColorScheme } from "react-native";
+import { StyleSheet, View, useColorScheme } from "react-native";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../hooks/useStore";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +11,7 @@ import { ScanAgainButton } from "../components/ScanAgainButton";
 import AllIngredients from "../components/AllIngredients";
 import IngredientListView from "../components/IngredientListView";
 import { PATHS, schoolOfThoughtOptions, COLORS, LABELS } from "../constants";
+import SelectMadhab from "./SelectMadhab";
 
 function TabProductDetails() {
   const { product, user } = useStore();
@@ -30,6 +30,10 @@ function TabProductDetails() {
     );
   }
 
+  if (!user.current_user.schoolOfThought) {
+    return <SelectMadhab />;
+  }
+
   const reportProduct = () => {
     navigation.navigate(PATHS.REPORT_PRODUCT as never);
   };
@@ -41,8 +45,8 @@ function TabProductDetails() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Card padding>
+    <Card padding style={styles.container}>
+      <View style={styles.gap}>
         <Title label={product.current_scannedProduct?.productName} />
         <Row>
           <Typography
@@ -69,13 +73,6 @@ function TabProductDetails() {
             ))}
           </Picker>
         </Row>
-        {product.current_scannedProduct?.vegan && !product.has_alcohol && (
-          <Row>
-            <Title level="3" label={LABELS.VEGAN} />
-            <FontAwesome name="leaf" size={24} color="green" />
-          </Row>
-        )}
-
         <Button
           label={product.getProductStatus()}
           type={getStatusButtonType()}
@@ -94,7 +91,7 @@ function TabProductDetails() {
             onDismiss={() => setShowModal(false)}
           />
         )}
-      </Card>
+      </View>
       <View style={styles.footer}>
         <Button
           label={LABELS.OPNIEUW_SCANNEN}
@@ -108,16 +105,16 @@ function TabProductDetails() {
           onPress={reportProduct}
         />
       </View>
-    </SafeAreaView>
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
+  gap: {
+    gap: 16,
+  },
   container: {
-    flex: 1,
-    display: "flex",
-    alignContent: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   statusButton: {
     marginVertical: 8,
@@ -131,7 +128,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     justifyContent: "flex-end",
-    margin: 16,
     gap: 8,
   },
   picker: {

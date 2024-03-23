@@ -4,12 +4,16 @@ import { PATHS } from "../constants/paths";
 import { useStore } from "../hooks/useStore";
 import Button from "./Button";
 
-export const ScanAgainButton = () => {
+interface ScanAgainButtonProps {
+  buttonLabel?: string;
+}
+
+export const ScanAgainButton = (props: ScanAgainButtonProps) => {
   const { product } = useStore();
   const navigation = useNavigation();
   return (
     <Button
-      label={LABELS.OPNIEUW_SCANNEN}
+      label={props.buttonLabel ?? LABELS.OPNIEUW_SCANNEN}
       onPress={() => {
         product.setScanned(false);
         product.setScannedProduct(null);

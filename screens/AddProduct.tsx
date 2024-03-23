@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import Card from "../components/Card";
 import { useStore } from "../hooks/useStore";
 import { observer } from "mobx-react-lite";
@@ -50,10 +49,10 @@ function AddProduct() {
     if (response.error) {
       setShowModal(true);
       setPopupLabel(
-        // TODO improve error messages
+        // TODO: improve error messages
         response.error?.message == "This attribute must be unique"
           ? LABELS.PRODUCT_BESTAAT_AL
-          : response.error.message
+          : response.error.message,
       );
       return;
     }
@@ -67,7 +66,7 @@ function AddProduct() {
     const haramLabel = `${
       LABELS.NEW_PRODUCT_ADDED_SUCCESS
     } \nProduct is waarschijnlijk haram door de volgende ingredienten: ${haramIngredients.join(
-      ", "
+      ", ",
     )}.`;
     const halalLabel = `${LABELS.NEW_PRODUCT_ADDED_SUCCESS} \nGeen haram ingredienten gedetecteerd. Product is waarschijnlijk halal.`;
     const label = haramIngredients.length ? haramLabel : halalLabel;
@@ -76,27 +75,31 @@ function AddProduct() {
   };
 
   return (
-    <Card padding style={{ display: "flex", flex: 1 }}>
-      <Title label={LABELS.BARCODE} level="1" />
-      <Title label={product.current_barcode ?? LABELS.GEEN_BARCODE_GEVONDEN} level="2" />
-      <Card>
-        <TextInput
-          onChangeText={(e) => setProductName(e)}
-          value={productName}
-          label={LABELS.PRODUCT_NAAM}
-          mode="outlined"
+    <Card padding>
+      <>
+        <Title label={LABELS.BARCODE} level="1" />
+        <Title
+          label={product.current_barcode ?? LABELS.GEEN_BARCODE_GEVONDEN}
+          level="2"
         />
-        <IngredientInput
-          label={LABELS.VOEG_INGREDIENTEN_TOE}
-          setIngredients={setIngredients}
-          value={ingredients}
-          placeholder={LABELS.EEN_INGREDIENT_PER_REGEL}
-        />
-      </Card>
+        <Card>
+          <TextInput
+            onChangeText={(e) => setProductName(e)}
+            value={productName}
+            label={LABELS.PRODUCT_NAAM}
+            mode="outlined"
+          />
+          <IngredientInput
+            label={LABELS.VOEG_INGREDIENTEN_TOE}
+            setIngredients={setIngredients}
+            value={ingredients}
+            placeholder={LABELS.VOER_INGREDIENTEN_IN}
+          />
+        </Card>
+      </>
       <Button
         label={LABELS.PRODUCT_TOEVOEGEN}
         onPress={() => sendProduct()}
-        style={styles.bottom}
         disabled={!productName}
       />
       {showModal && (
@@ -113,12 +116,5 @@ function AddProduct() {
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  bottom: {
-    justifyContent: "flex-end",
-    marginBottom: 50,
-  },
-});
 
 export default observer(AddProduct);

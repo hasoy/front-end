@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { observer } from "mobx-react-lite";
 import { Pressable, StyleSheet } from "react-native";
 import { ITextColor, Typography } from "./Typography";
 
@@ -9,7 +10,7 @@ interface ILinkText {
   onPress?: () => void;
 }
 
-export default function LinkText({ label, color = "LIGHT_RED", to, onPress }: ILinkText) {
+function LinkText({ label, color = "LIGHT_RED", to, onPress }: ILinkText) {
   const navigation = useNavigation();
   return (
     <Pressable
@@ -17,8 +18,14 @@ export default function LinkText({ label, color = "LIGHT_RED", to, onPress }: IL
         if (onPress) onPress();
         if (to) navigation.navigate(to as never);
       }}
+      style={{ zIndex: 1 }}
     >
-      <Typography style={[styles.link]} color={color} label={label} weight="600" />
+      <Typography
+        style={[styles.link]}
+        color={color}
+        label={label}
+        weight="600"
+      />
     </Pressable>
   );
 }
@@ -30,3 +37,5 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
 });
+
+export default observer(LinkText);

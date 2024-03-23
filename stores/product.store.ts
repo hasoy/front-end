@@ -1,8 +1,8 @@
 import { action, makeAutoObservable } from "mobx";
+import URLS from "../constants/Host";
+import { LABELS } from "../constants/Labels";
 import { IIngredientState, IProduct } from "../types/schemas.types";
 import { Store } from "./index.store";
-import { haramProduct, doubtfulProduct } from "./testProduct";
-import { LABELS } from "../constants/Labels";
 
 export class ProductStore {
   [key: string]: unknown;
@@ -15,9 +15,7 @@ export class ProductStore {
   constructor(rootStore: Store) {
     this.store = rootStore;
     this.scanned = false;
-    // TODO remove if not dev
-    // this.scannedProduct = null;
-    this.scannedProduct = haramProduct;
+    this.scannedProduct = null;
     this.barcode = null;
     this.selectedIngredient = null;
     makeAutoObservable(this);
@@ -25,14 +23,6 @@ export class ProductStore {
 
   get current_scannedProduct() {
     return this.scannedProduct;
-  }
-
-  get current_scanned() {
-    return this.scanned;
-  }
-
-  get current_new_product() {
-    return this.newProduct;
   }
 
   get current_selectedIngredient() {
@@ -43,17 +33,15 @@ export class ProductStore {
     return this.barcode;
   }
 
-  get current_detected_words() {
-    return this.detectedWords;
-  }
-
   get filtered_ingredients() {
     return this.scannedProduct.ingredients?.data
       ?.filter((ingredient) => {
         const { id, attributes } = ingredient.attributes.ingredient_state?.data;
         return (
           id &&
-          (attributes.schoolOfThought?.includes(this.store.user.current_user.schoolOfThought) ||
+          (attributes.schoolOfThought?.includes(
+            this.store.user.current_user.schoolOfThought,
+          ) ||
             attributes.consensus)
         );
       })
@@ -63,8 +51,24 @@ export class ProductStore {
       }));
   }
 
+  fetchProductByProductName = action(async (productId: number) => {
+    if (productId == null) return;
+    const url = `${URLS.HOST}${URLS.PRODUCTS}/${productId.toString()}?${URLS.POPULATE_INGREDIENTS}`;
+    try {
+      const res = await fetch(url);
+      const data1 = await res.json();
+      const data = JSON.parse(JSON.stringify(data1));
+      const productFormat = { id: productId, ...data.data.attributes };
+      return productFormat;
+    } catch (e) {
+      console.log(e);
+    }
+  });
+
   get haram_ingredients_list() {
-    return this.filtered_ingredients?.filter((ingredient) => ingredient.haram === true);
+    return this.filtered_ingredients?.filter(
+      (ingredient) => ingredient.haram === true,
+    );
   }
 
   get doubtful_ingredients_list() {
@@ -72,7 +76,9 @@ export class ProductStore {
   }
 
   get has_alcohol() {
-    return this.haram_ingredients_list?.some((ingredient) => ingredient.title === "alcohol");
+    return this.haram_ingredients_list?.some(
+      (ingredient) => ingredient.title === "alcohol",
+    );
   }
 
   setScannedProduct = action((scannedProduct: IProduct | null) => {
@@ -91,10 +97,6 @@ export class ProductStore {
     this.set("selectedIngredient", ingredient);
   });
 
-  setDetectedWords = action((words: string[]) => {
-    this.set("detectedWords", words);
-  });
-
   getProductStatus = action(() => {
     const halalRegex = /h[ea]laa?l/i;
     const containsHalalWord =
@@ -108,7 +110,9 @@ export class ProductStore {
     }
     for (const haramIngredient of this.haram_ingredients_list) {
       if (
-        haramIngredient.schoolOfThought?.includes(this.store.user.current_user.schoolOfThought) ||
+        haramIngredient.schoolOfThought?.includes(
+          this.store.user.current_user.schoolOfThought,
+        ) ||
         haramIngredient.consensus === true
       ) {
         return LABELS.HARAM;
@@ -117,7 +121,7 @@ export class ProductStore {
     for (const doubtfulIngredient of this.doubtful_ingredients_list) {
       if (
         doubtfulIngredient.schoolOfThought?.includes(
-          this.store.user.current_user.schoolOfThought
+          this.store.user.current_user.schoolOfThought,
         ) ||
         doubtfulIngredient.consensus === true
       ) {
