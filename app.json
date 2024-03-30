@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sheikh Halal",
     "slug": "front-end",
-    "version": "1.0.4",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon.png",
     "userInterfaceStyle": "automatic",
@@ -23,11 +23,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/app-icon.png",
-        "backgroundColor": "#F7FAFB"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.hasoy.frontend",
       "runtimeVersion": "1.0.5",
-      "versionCode": 6
+      "versionCode": 7
     },
     "web": {
       "favicon": "./assets/images/app-icon.png",

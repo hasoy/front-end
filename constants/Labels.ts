@@ -1,5 +1,5 @@
 export const LABELS = {
-  SEARCH_PRODUCT: "Search product",
+  SEARCH_PRODUCT: "Producten zoeken",
   NO_SEARCH_RESULTS: "Geen resultaten",
   VOER_INGREDIENTEN_IN: "Zet een komma tussen ingrediënten",
   CONTACT: {

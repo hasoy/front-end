@@ -52,7 +52,7 @@ export default function Card({
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
+    flexGrow: 1,
     gap: 6,
   },
   padding: {

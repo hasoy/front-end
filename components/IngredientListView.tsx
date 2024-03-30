@@ -25,7 +25,7 @@ function IngredientListView({ setShowModal }: IIngredientListView) {
       {haram_ingredients_list?.length > 0 &&
         (has_alcohol || !product.current_scannedProduct.vegan) &&
         !containsHalalWord && (
-          <>
+          <View>
             <Title label={LABELS.HARAM_INGREDIENTEN} level="3" />
             <Card row>
               {haram_ingredients_list?.map((haramItem) => {
@@ -42,12 +42,12 @@ function IngredientListView({ setShowModal }: IIngredientListView) {
                 );
               })}
             </Card>
-          </>
+          </View>
         )}
       {doubtful_ingredients_list.length > 0 &&
         !product.current_scannedProduct.vegan &&
         !containsHalalWord && (
-          <>
+          <View>
             <Title label={LABELS.TWIJFELACHTIGE_INGREDIENTEN} level="3" />
             <Card scroll={false} row>
               {doubtful_ingredients_list.map((doubtfulItem) => {
@@ -65,7 +65,7 @@ function IngredientListView({ setShowModal }: IIngredientListView) {
                 );
               })}
             </Card>
-          </>
+          </View>
         )}
     </>
   );

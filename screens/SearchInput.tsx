@@ -79,6 +79,12 @@ export const SearchInput = () => {
     navigate.navigate(PATHS.PRODUCT_DETAILS as never);
   };
 
+  const noResults =
+    searchResults.length === 0 &&
+    !searchLoading &&
+    search !== "" &&
+    searchRef.current !== "";
+
   return (
     <>
       <Searchbar
@@ -88,12 +94,9 @@ export const SearchInput = () => {
         placeholder={LABELS.SEARCH_PRODUCT}
         loading={searchLoading}
       />
-      {searchResults.length === 0 &&
-        !searchLoading &&
-        search !== "" &&
-        searchRef.current !== "" && (
-          <HelperText type="info">{LABELS.NO_SEARCH_RESULTS}</HelperText>
-        )}
+      {noResults && (
+        <HelperText type="info">{LABELS.NO_SEARCH_RESULTS}</HelperText>
+      )}
       {searchResults.length > 0 && (
         <DataTable>
           <DataTable.Header>
