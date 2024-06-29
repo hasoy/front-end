@@ -35,7 +35,8 @@ export const LABELS = {
   VOEG_EEN_WOORD_TOE: "Voeg een woord toe",
   FOUT_MISSENDE_INFO: "Fout of missende informatie",
   GEEN_BARCODE_GEVONDEN: "Geen barcode gevonden",
-  GEEN_TOESTEMMING_CAMERA: "Geen toestemming voor camera ontvangen",
+  GEEN_TOESTEMMING_CAMERA:
+    "Geen toestemming voor camera ontvangen. Druk de knop hieronder om opnieuw toestemming aan te vragen of ga naar de instellingen in je telefoon en zet toestemming voor camera voor de app Sheikh Halal aan.",
   GESCAND_PRODUCT: "Gescand product",
   HALAL: "Halal",
   HARAM_INGREDIENTEN: "Haram ingrediënten",

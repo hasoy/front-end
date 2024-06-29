@@ -62,7 +62,11 @@ export const SearchInput = () => {
         return;
       }
       const removedDuplicates = new Set(array);
-      setSearchResults(Array.from(removedDuplicates));
+      setSearchResults(
+        Array.from(removedDuplicates).filter((item) =>
+          item.productName.includes(search),
+        ),
+      );
     } catch (e) {
       console.log(e);
     } finally {

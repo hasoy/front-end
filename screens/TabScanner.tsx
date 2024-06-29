@@ -72,7 +72,7 @@ function TabScanner() {
         <Typography label={LABELS.GEEN_TOESTEMMING_CAMERA} />
         <Button
           label={LABELS.TOESTEMMING_CAMERA_AANVRAAG}
-          onPress={() => requestPermission()}
+          onPress={requestPermission}
         />
       </Card>
     );
